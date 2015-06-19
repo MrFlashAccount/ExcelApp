@@ -5,3 +5,5 @@ d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\Exel
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.csproj.ResolveComReference.cache
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.exe
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.pdb
+d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.Main.resources
+d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.csproj.GenerateResource.Cache

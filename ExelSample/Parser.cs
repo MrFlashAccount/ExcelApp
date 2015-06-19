@@ -58,7 +58,6 @@ namespace ExelSample
             objWorkExcel.Quit(); // выйти из экселя
             Marshal.FinalReleaseComObject(objWorkExcel);
             Marshal.CleanupUnusedObjectsInCurrentContext();
-            GC.Collect(); // убрать за собой
         }
 
         private void ReadFullReport(object path)
@@ -71,9 +70,9 @@ namespace ExelSample
                 Type.Missing, Type.Missing); //открыть файл
             Excel.Worksheet objWorkSheet = (Excel.Worksheet)objWorkBook.Sheets[1]; //получить 1 лист
             var lastCell = objWorkSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell); //1 ячейку
-            _fullReport = new string[lastCell.Column, lastCell.Row]; // массив значений с листа равен по размеру листу
+            _fullReport = new string[15, lastCell.Row]; // массив значений с листа равен по размеру листу
 
-            for (int i = 0; i < _fullReport.GetLength(0); i++) //по всем колонкам
+            for (int i = 0; i < 15; i++) //по всем колонкам
                 for (int j = 0; j < _fullReport.GetLength(1); j++) // по всем строкам
                     _fullReport[i, j] = objWorkSheet.Cells[j + 1, i + 1].Text.ToString(); //считываем текст в строку
 
@@ -81,7 +80,6 @@ namespace ExelSample
             objWorkExcel.Quit(); // выйти из экселя
             Marshal.FinalReleaseComObject(objWorkExcel);
             Marshal.CleanupUnusedObjectsInCurrentContext();
-            GC.Collect(); // убрать за собой
         }
 
         public List<Employee> Parse()
