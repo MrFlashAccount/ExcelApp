@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ExelSample
 {
@@ -27,12 +28,13 @@ namespace ExelSample
 
             #endregion
 
-            #region чтение в 1 поток
+            #region чтение в 1 поток(не используется)
 
             //ReadInOutFile(inOutReportPath);
             //ReadFullReport(fullReportPath);
 
             #endregion
+
             Marshal.CleanupUnusedObjectsInCurrentContext();
             GC.Collect();
         }
@@ -82,7 +84,7 @@ namespace ExelSample
             Marshal.CleanupUnusedObjectsInCurrentContext();
         }
 
-        public List<Employee> Parse()
+        public List<Employee> Parse(Agregator agrLink)
         {
             List<Employee> employees = new List<Employee>();
             int numEmployees;
@@ -95,30 +97,33 @@ namespace ExelSample
             {
                 string[] fullName;
                 int id;
-                if (_inOutReport[2, i + startNumber] != String.Empty)
+                int position = i + startNumber;
+
+                InOutTime[] times = GetInOutTimeData(position, agrLink);
+                if (_inOutReport[2, position] != string.Empty)
                 {
-                    id = Convert.ToInt32(_inOutReport[2, i + startNumber]);
+                    id = Convert.ToInt32(_inOutReport[2, position]);
                     string[] division;
                     string[] fullData = GetFullData(id, out division);
                     if (fullData != null)
                     {
-                        employees.Add(new Employee(id, fullData[0], fullData[1], fullData[2], fullData[3], fullData[4], division));
+                        employees.Add(new Employee(id, fullData[0], fullData[1], fullData[2], times, fullData[3], fullData[4], division));
                         count++;
                     }
                     else
                     {
-                        fullName = ParseFullName(i + startNumber);
-                        employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2]));
+                        fullName = ParseFullName(position);
+                        employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2], times));
                     }
                 }
                 else
                 {
                     id = 0;
-                    fullName = ParseFullName(i + startNumber);
-                    employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2]));
+                    fullName = ParseFullName(position);
+                    employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2], times));
                 }
             }
-            Console.WriteLine(count);
+            MessageBox.Show(count.ToString());
             return employees;
         }
 
@@ -188,6 +193,29 @@ namespace ExelSample
             }
 
             return fullData;
+        }
+
+        private InOutTime[] GetInOutTimeData(int position, Agregator agrLink)
+        {
+            InOutTime[] data = new InOutTime[7];
+            string pattern = @"([0-9]+:[0-9]+:[0-9]+)|(нет)";
+            Regex reg = new Regex(pattern);
+            string[] temp;
+
+            for (int i = 0; i < 7; i++)
+            {
+                temp = new string[2];
+                int j = 0;
+                Match match = reg.Match(_inOutReport[i+5, position]);
+                while (match.Success)
+                {
+                    temp[j] = match.Value;
+                    match = match.NextMatch();
+                    j++;
+                }
+                data[i] = new InOutTime(_inOutReport[i+5, 4],temp[0],temp[1], agrLink);
+            }
+            return data;
         }
     }
 }

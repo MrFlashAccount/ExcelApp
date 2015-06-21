@@ -14,6 +14,13 @@ namespace ExelSample
 
         private void OpenFullReportButton_Click(object sender, EventArgs e)
         {
+            //string str = "08.06.2015";
+            //DateTime dt = DateTime.Parse(str);
+            //DateTime test = new DateTime();
+            //test.DayOfWeek = (DayOfWeek)1;
+            //MessageBox.Show();
+            //if (dt.DayOfWeek > (DayOfWeek) 1)
+                //MessageBox.Show(DateTime.Parse(str).DayOfWeek.ToString());
             OpenFileDialog chooseFile = new OpenFileDialog();
 
             if (chooseFile.ShowDialog() == DialogResult.OK)
@@ -49,6 +56,12 @@ namespace ExelSample
                 OpenInOutReportButton.Enabled = true;
             }
             else MessageBox.Show("Чего то не хватает","Ошибка!");
+        }
+
+        private void CheckSchedule_Click(object sender, EventArgs e)
+        {
+            Schedule schedule = new Schedule(agregator);
+            schedule.Show(this);
         }
 
         //private void RunThread()

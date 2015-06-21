@@ -36,8 +36,11 @@
             this.OpenInOutReportButton = new System.Windows.Forms.Button();
             this.FireButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.CheckSchedule = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // OpenFullReportButton
@@ -74,7 +77,7 @@
             // 
             this.groupBox2.Controls.Add(this.InOutReportPathTextBox);
             this.groupBox2.Controls.Add(this.OpenInOutReportButton);
-            this.groupBox2.Location = new System.Drawing.Point(12, 114);
+            this.groupBox2.Location = new System.Drawing.Point(278, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(260, 96);
             this.groupBox2.TabIndex = 2;
@@ -102,7 +105,7 @@
             // 
             // FireButton
             // 
-            this.FireButton.Location = new System.Drawing.Point(105, 227);
+            this.FireButton.Location = new System.Drawing.Point(235, 188);
             this.FireButton.Name = "FireButton";
             this.FireButton.Size = new System.Drawing.Size(75, 23);
             this.FireButton.TabIndex = 3;
@@ -114,11 +117,32 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.CheckSchedule);
+            this.groupBox3.Location = new System.Drawing.Point(142, 114);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(260, 68);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Шаг 3";
+            // 
+            // CheckSchedule
+            // 
+            this.CheckSchedule.Location = new System.Drawing.Point(34, 19);
+            this.CheckSchedule.Name = "CheckSchedule";
+            this.CheckSchedule.Size = new System.Drawing.Size(192, 23);
+            this.CheckSchedule.TabIndex = 0;
+            this.CheckSchedule.Text = "Проверить график";
+            this.CheckSchedule.UseVisualStyleBackColor = true;
+            this.CheckSchedule.Click += new System.EventHandler(this.CheckSchedule_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(549, 223);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.FireButton);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -130,6 +154,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -144,5 +169,7 @@
         private System.Windows.Forms.Button OpenInOutReportButton;
         private System.Windows.Forms.Button FireButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button CheckSchedule;
     }
 }
