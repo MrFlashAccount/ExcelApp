@@ -63,7 +63,7 @@ namespace ExelSample
         /// <returns>список начальников</returns>
         private List<Employee> GetChiefList()
         {
-            return  employees.Where(s => s.Category == "Руководитель").Where(s => s.Subdivision[3] == "").ToList(); // Если руководитель и не ниже 3 уровня.
+            return  employees.Where(s => s.Category == "Руководитель" || s.Category == "Ведущий менеджер").Where(s => s.Subdivision[3] == "").ToList(); // Если руководитель и не ниже 3 уровня.
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace ExelSample
                 employee.FindChief(chiefs);
             }
 
-            SmtpClient smtp = new SmtpClient("smtp.yandex.ru", Int32.Parse(Properties.Settings.Default.Port))
+            SmtpClient smtp = new SmtpClient(Properties.Settings.Default.SMTP, Int32.Parse(Properties.Settings.Default.Port))
             {
                 Credentials = new NetworkCredential(Properties.Settings.Default.Email, Properties.Settings.Default.Password),
                 EnableSsl = true
@@ -97,6 +97,8 @@ namespace ExelSample
                 From = new MailAddress("m1026m@yandex.ru"),
                 Subject = "Опоздавшиe"
             };
+
+
         }
     }
 }
