@@ -46,16 +46,14 @@ namespace ExelSample
         {
             if (IncomeTime != null)
             {
-                int compareResult =
-                    IncomeTime.Value.CompareTo(agrLink.StartWorkingWeek.ElementAt((int) Date.DayOfWeek).Value);
+                int compareResult = IncomeTime.Value.CompareTo(agrLink.StartWorkingWeek.ElementAt((int) Date.DayOfWeek).Value);
                     //Сравниваем время прихода с расписанием
                 if (compareResult > 0) return true;
             }
 
             if (OutcomeTime != null)
             {
-                int compareResult =
-                    OutcomeTime.Value.CompareTo(agrLink.EndWorkingWeek.ElementAt((int) Date.DayOfWeek).Value);
+                int compareResult = OutcomeTime.Value.CompareTo(agrLink.EndWorkingWeek.ElementAt((int) Date.DayOfWeek).Value);
                     //Сравниваем время ухода с расписанием
                 if (compareResult < 0) return true;
             }

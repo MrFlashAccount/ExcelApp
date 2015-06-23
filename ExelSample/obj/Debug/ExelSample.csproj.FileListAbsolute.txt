@@ -7,5 +7,5 @@ d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\Exel
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.Main.resources
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.csproj.GenerateResource.Cache
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.Schedule.resources
-d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\bin\Debug\ExelSample.exe.CodeAnalysisLog.xml
-d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\bin\Debug\ExelSample.exe.lastcodeanalysissucceeded
+d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.csprojResolveAssemblyReference.cache
+d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.Settings.resources

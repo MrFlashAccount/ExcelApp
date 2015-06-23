@@ -17,7 +17,7 @@ namespace ExelSample
         {
             dataGridView1.ColumnCount = 7;
             dataGridView1.RowCount = 2;
-            dataGridView1.Columns[0].Width = 160;
+            dataGridView1.Columns[0].Width = 100;
             dataGridView1.Columns[0].Name = "Понедельник";
             dataGridView1.Columns[1].Name = "Вторник";
             dataGridView1.Columns[2].Name = "Среда";
@@ -25,7 +25,7 @@ namespace ExelSample
             dataGridView1.Columns[4].Name = "Пятница";
             dataGridView1.Columns[5].Name = "Суббота";
             dataGridView1.Columns[6].Name = "Воскресенье";
-            //dataGridView1.DataSource = _agrLink.StartWorkingWeek.Values..ToList();
+
             for (int i = 0; i < 7; i++)
             {
                 if (_agrLink.StartWorkingWeek.Values.ElementAt(i).Hours != 0)
@@ -50,6 +50,10 @@ namespace ExelSample
         private void button1_Click(object sender, EventArgs e)
         {
 
+            foreach (DataGridViewRow dr in dataGridView1.Rows)
+            {
+
+            }
         }
     }
 }

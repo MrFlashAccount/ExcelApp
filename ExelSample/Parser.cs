@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace ExelSample
 {
@@ -13,7 +12,7 @@ namespace ExelSample
     {
         private string[,] _inOutReport;
         private string[,] _fullReport;
-        public void Read(string inOutReportPath,string fullReportPath)
+        public void Read(string inOutReportPath, string fullReportPath)
         {
             #region чтение в 2 потока
 
@@ -35,7 +34,7 @@ namespace ExelSample
 
             #endregion
 
-            Marshal.CleanupUnusedObjectsInCurrentContext();
+            Marshal.CleanupUnusedObjectsInCurrentContext(); // выгрузить неуправляемые ресурсы
             GC.Collect();
         }
 
@@ -87,71 +86,61 @@ namespace ExelSample
         public List<Employee> Parse(Agregator agrLink)
         {
             List<Employee> employees = new List<Employee>();
-            int numEmployees;
-            int upperNumber;
-            int startNumber;
+            int numEmployees = GetNumberOfEmployees();
             int count = 0;
 
-            GetNumberOfEmployees(out numEmployees, out upperNumber, out startNumber);
             for (int i = 0; i < numEmployees; i++)
             {
                 string[] fullName;
-                int id;
-                int position = i + startNumber;
+                int position = i + 2; // индекс служащего в _fullReport
+                int id = Convert.ToInt32(_fullReport[5, position]); //получаем отдельно id.
+                string[] subdivision; // массив подразделений
+                string[] fullData = GetFullData(position, out subdivision); // полная инфрмация о сотруднике
+                InOutTime[] times = GetInOutTimeData(id, agrLink); // массив, содержащий информацию о времени прихода-ухода
 
-                InOutTime[] times = GetInOutTimeData(position, agrLink);
-                if (_inOutReport[2, position] != string.Empty)
+                if (fullData != null)
                 {
-                    id = Convert.ToInt32(_inOutReport[2, position]);
-                    string[] division;
-                    string[] fullData = GetFullData(id, out division);
-                    if (fullData != null)
-                    {
-                        employees.Add(new Employee(id, fullData[0], fullData[1], fullData[2], times, fullData[3], fullData[4], division));
-                        count++;
-                    }
-                    else
-                    {
-                        fullName = ParseFullName(position);
-                        employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2], times));
-                    }
+                    employees.Add(new Employee(id, fullData[0], fullData[1], fullData[2], times, fullData[3], fullData[4], subdivision));
+                    count++;
                 }
                 else
                 {
-                    id = 0;
                     fullName = ParseFullName(position);
                     employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2], times));
                 }
+                //id = 0;
+                //fullName = ParseFullName(position);
+                //employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2], times));
             }
-            MessageBox.Show(count.ToString());
             return employees;
         }
 
-        private void GetNumberOfEmployees(out int numEmployees, out int upperNumber, out int startNumber)
+        private int GetNumberOfEmployees()
         {
-            upperNumber = 0;
-            numEmployees = 0;
-            startNumber = 0;
-            string pattern = @"[0-9]+";
-            Regex reg = new Regex(pattern);
-            for (int i = _inOutReport.GetLength(1) - 1; i >= 0; i--)
-            {
-                if (reg.IsMatch(_inOutReport[1, i]))
-                {
-                    upperNumber = i;
-                    numEmployees = Convert.ToInt32(_inOutReport[1, i]);
-                    break;
-                }
-            }
+            return Int16.Parse(_fullReport[0, _fullReport.GetLength(1) - 1]);
+            //upperNumber = 0;
+            //numEmployees = 0;
+            //startNumber = 0;
+            //string pattern = @"[0-9]+";
+            //Regex reg = new Regex(pattern);
+            //for (int i = _inOutReport.GetLength(1) - 1; i >= 0; i--)
+            //{
+            //    if (reg.IsMatch(_inOutReport[1, i]))
+            //    {
+            //        upperNumber = i;
+            //        numEmployees = Convert.ToInt32(_inOutReport[1, i]);
+            //        break;
+            //    }
+            //}
 
-            for (int i = 0; i < _inOutReport.GetLength(1); i++)
-            {
-                if (reg.IsMatch(_inOutReport[1, i]))
-                {
-                    startNumber = i;
-                    break;
-                }
-            }
+            //for (int i = 0; i < _inOutReport.GetLength(1); i++)
+            //{
+            //    if (reg.IsMatch(_inOutReport[1, i]))
+            //    {
+            //        startNumber = i;
+            //        break;
+            //    }
+            //}
         }
 
         private string[] ParseFullName(int position)
@@ -168,36 +157,39 @@ namespace ExelSample
             return fullName;
         }
 
-        private string[] GetFullData(int id, out string[] division)
+        private string[] GetFullData(int position, out string[] division)
         {
-            int index;
             int j = 0;
             string[] fullData = new string[5];
             division = new string[6];
 
-            var newV = Enumerable.Range(0, _fullReport.GetLength(1)).Where(i => _fullReport[5, i].Equals(id.ToString())).ToArray();
-            if (newV.Length > 0)
-                index = newV[0];
-            else return null;
+            fullData[0] = _fullReport[2, position];
+            fullData[1] = _fullReport[3, position];
+            fullData[2] = _fullReport[4, position];
+            fullData[3] = _fullReport[13, position];
+            fullData[4] = _fullReport[14, position];
 
-            fullData[0] = _fullReport[2, index];
-            fullData[1] = _fullReport[3, index];
-            fullData[2] = _fullReport[4, index];
-            fullData[3] = _fullReport[13, index];
-            fullData[4] = _fullReport[14, index];
-
-            while(j < 6)
-            {
-                division[j] = _fullReport[j + 7, index];
-                j++;
-            }
+            for (int i = 0; i < 6; i++)
+                division[i] = _fullReport[i + 7, position];
 
             return fullData;
         }
 
-        private InOutTime[] GetInOutTimeData(int position, Agregator agrLink)
+        private InOutTime[] GetInOutTimeData(int id, Agregator agrLink)
         {
             InOutTime[] data = new InOutTime[7];
+            int index;
+            try
+            {
+                index = Enumerable.Range(0, _inOutReport.GetLength(1))
+                    .Where(i => _inOutReport[2, i].Equals(id.ToString()))
+                    .ToList().Last();
+            }
+            catch ( SystemException ex)
+            {
+                return null;
+            }
+
             string pattern = @"([0-9]+:[0-9]+:[0-9]+)|(нет)";
             Regex reg = new Regex(pattern);
             string[] temp;
@@ -206,14 +198,14 @@ namespace ExelSample
             {
                 temp = new string[2];
                 int j = 0;
-                Match match = reg.Match(_inOutReport[i+5, position]);
+                Match match = reg.Match(_inOutReport[i + 5, index]);
                 while (match.Success)
                 {
                     temp[j] = match.Value;
                     match = match.NextMatch();
                     j++;
                 }
-                data[i] = new InOutTime(_inOutReport[i+5, 4],temp[0],temp[1], agrLink);
+                data[i] = new InOutTime(_inOutReport[i + 5, 4], temp[0], temp[1], agrLink);
             }
             return data;
         }
