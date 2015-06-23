@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 // ReSharper disable InconsistentNaming
@@ -47,7 +48,16 @@ namespace ExelSample
 
         public void FindChief(List<Employee> chiefList)
         {
-            Chief = chiefList.Last(s => s.Subdivision[2].Equals(Subdivision[2]));
+            if (Category != "Руководитель" && Category != "Ведущий менеджер")
+                try
+                {
+                    Chief = chiefList.Last(s => s.Subdivision[2].Equals(Subdivision[2]));
+                }
+                catch (InvalidOperationException)
+                {
+                    Chief = chiefList.Last(s => s.Id == 14001333);
+                }
+            else Chief = chiefList.Last(s => s.Id == 14001333);
         }
     }
 }

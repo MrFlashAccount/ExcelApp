@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Threading;
+using Microsoft.Office.Interop.Excel;
 
 namespace ExelSample
 {
@@ -40,15 +40,15 @@ namespace ExelSample
 
         private void ReadInOutFile(object path)
         {
-            Excel.Application objWorkExcel = new Excel.Application();
-            Excel.Workbook objWorkBook = objWorkExcel.Workbooks.Open((string)path,
+            Application objWorkExcel = new Application();
+            Workbook objWorkBook = objWorkExcel.Workbooks.Open((string)path,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing); //открыть файл
 
-            Excel.Worksheet objWorkSheet = (Excel.Worksheet)objWorkBook.Sheets[1]; //получить 1 лист
-            var lastCell = objWorkSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell); //1 ячейку
+            Worksheet objWorkSheet = (Worksheet)objWorkBook.Sheets[1]; //получить 1 лист
+            var lastCell = objWorkSheet.Cells.SpecialCells(XlCellType.xlCellTypeLastCell); //1 ячейку
             _inOutReport = new string[lastCell.Column, lastCell.Row]; // массив значений с листа равен по размеру листу
 
             for (int i = 0; i < _inOutReport.GetLength(0); i++) //по всем колонкам
@@ -63,14 +63,14 @@ namespace ExelSample
 
         private void ReadFullReport(object path)
         {
-            Excel.Application objWorkExcel = new Excel.Application();
-            Excel.Workbook objWorkBook = objWorkExcel.Workbooks.Open((string)path,
+            Application objWorkExcel = new Application();
+            Workbook objWorkBook = objWorkExcel.Workbooks.Open((string)path,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing, Type.Missing, Type.Missing,
                 Type.Missing, Type.Missing); //открыть файл
-            Excel.Worksheet objWorkSheet = (Excel.Worksheet)objWorkBook.Sheets[1]; //получить 1 лист
-            var lastCell = objWorkSheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell); //1 ячейку
+            Worksheet objWorkSheet = (Worksheet)objWorkBook.Sheets[1]; //получить 1 лист
+            var lastCell = objWorkSheet.Cells.SpecialCells(XlCellType.xlCellTypeLastCell); //1 ячейку
             _fullReport = new string[15, lastCell.Row]; // массив значений с листа равен по размеру листу
 
             for (int i = 0; i < 15; i++) //по всем колонкам
@@ -185,7 +185,7 @@ namespace ExelSample
                     .Where(i => _inOutReport[2, i].Equals(id.ToString()))
                     .ToList().Last();
             }
-            catch ( SystemException ex)
+            catch (SystemException ex)
             {
                 return null;
             }

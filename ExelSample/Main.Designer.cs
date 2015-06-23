@@ -1,11 +1,14 @@
-﻿namespace ExelSample
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace ExelSample
 {
     partial class Main
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -231,21 +234,21 @@
 
         #endregion
 
-        private System.Windows.Forms.Button OpenFullReportButton;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox FullReportPathTextBox;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TextBox InOutReportPathTextBox;
-        private System.Windows.Forms.Button OpenInOutReportButton;
-        private System.Windows.Forms.Button FireButton;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button CheckSchedule;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button SettingsButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private Button OpenFullReportButton;
+        private GroupBox groupBox1;
+        private TextBox FullReportPathTextBox;
+        private GroupBox groupBox2;
+        private TextBox InOutReportPathTextBox;
+        private Button OpenInOutReportButton;
+        private Button FireButton;
+        private OpenFileDialog openFileDialog1;
+        private GroupBox groupBox3;
+        private Button CheckSchedule;
+        private TabControl tabControl1;
+        private TabPage tabPage1;
+        private TabPage tabPage2;
+        private Button SettingsButton;
+        private Label label1;
+        private Label label2;
     }
 }
