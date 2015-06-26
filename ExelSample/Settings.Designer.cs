@@ -33,16 +33,19 @@ namespace ExelSample
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.LoadTemplateButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -71,6 +74,15 @@ namespace ExelSample
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Настройки почты";
             // 
+            // textBox4
+            // 
+            this.textBox4.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ExelSample.Properties.Settings.Default, "SMTP", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.textBox4.Location = new System.Drawing.Point(50, 108);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(204, 20);
+            this.textBox4.TabIndex = 6;
+            this.textBox4.Text = global::ExelSample.Properties.Settings.Default.SMTP;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -89,45 +101,6 @@ namespace ExelSample
             this.label3.TabIndex = 4;
             this.label3.Text = "Порт";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 51);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Пароль";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(116, 161);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "ОК";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(197, 161);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Отмена";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // textBox4
-            // 
-            this.textBox4.DataBindings.Add(new System.Windows.Forms.Binding("Text", global::ExelSample.Properties.Settings.Default, "SMTP", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.textBox4.Location = new System.Drawing.Point(50, 108);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(204, 20);
-            this.textBox4.TabIndex = 6;
-            this.textBox4.Text = global::ExelSample.Properties.Settings.Default.SMTP;
-            // 
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(50, 77);
@@ -145,6 +118,15 @@ namespace ExelSample
             this.textBox2.TabIndex = 3;
             this.textBox2.Text = global::ExelSample.Properties.Settings.Default.Password;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 51);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Пароль";
+            // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(50, 22);
@@ -153,13 +135,55 @@ namespace ExelSample
             this.textBox1.TabIndex = 1;
             this.textBox1.Text = global::ExelSample.Properties.Settings.Default.Email;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(116, 246);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "ОК";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button2.Location = new System.Drawing.Point(197, 246);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 7;
+            this.button2.Text = "Отмена";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.LoadTemplateButton);
+            this.groupBox2.Location = new System.Drawing.Point(12, 162);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(260, 57);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Шаблон";
+            // 
+            // LoadTemplateButton
+            // 
+            this.LoadTemplateButton.Location = new System.Drawing.Point(82, 19);
+            this.LoadTemplateButton.Name = "LoadTemplateButton";
+            this.LoadTemplateButton.Size = new System.Drawing.Size(117, 23);
+            this.LoadTemplateButton.TabIndex = 9;
+            this.LoadTemplateButton.Text = "Загрузить шаблон";
+            this.LoadTemplateButton.UseVisualStyleBackColor = true;
+            this.LoadTemplateButton.Click += new System.EventHandler(this.LoadTemplateButton_Click);
+            // 
             // Settings
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(284, 190);
+            this.ClientSize = new System.Drawing.Size(284, 281);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox1);
@@ -168,8 +192,10 @@ namespace ExelSample
             this.Name = "Settings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
+            this.Load += new System.EventHandler(this.Settings_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -187,5 +213,7 @@ namespace ExelSample
         private Button button2;
         private TextBox textBox4;
         private Label label4;
+        private GroupBox groupBox2;
+        private Button LoadTemplateButton;
     }
 }

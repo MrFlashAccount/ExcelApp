@@ -7,10 +7,11 @@ namespace ExelSample
     {
         public TimeSpan? IncomeTime { get; set; }
         public TimeSpan? OutcomeTime { get; set; }
-        private DateTime Date { get; set; }
+        public DateTime Date { get; set; }
         public bool IsLatest { get; private set; }
 
-        public InOutTime(string date, string incomeTime, string outcomeTime, Agregator agrLink) : this()
+        public InOutTime(string date, string incomeTime, string outcomeTime, Agregator agrLink)
+            : this()
         {
             switch (incomeTime)
             {
@@ -44,21 +45,65 @@ namespace ExelSample
 
         private bool CheckLatest(Agregator agrLink)
         {
-            if (IncomeTime != null)
+
+            //если выходной, все в порядке
+            if (agrLink.StartWorkingWeek.ElementAt((int)Date.DayOfWeek).Value.ToString() == "00:00:00")
+                return false;
+
+            if (IncomeTime == null) //если сотрудника не было
             {
-                int compareResult = IncomeTime.Value.CompareTo(agrLink.StartWorkingWeek.ElementAt((int) Date.DayOfWeek).Value);
-                    //Сравниваем время прихода с расписанием
-                if (compareResult > 0) return true;
+                return true;
+            }
+            else
+            {
+                int compareResult =
+                    IncomeTime.Value.CompareTo(agrLink.StartWorkingWeek.ElementAt((int)Date.DayOfWeek).Value);
+                if (compareResult > 0) return true; //если все в порядке, проверим еще и уход
             }
 
-            if (OutcomeTime != null)
+            if (OutcomeTime == null) //если сотрудника не было
             {
-                int compareResult = OutcomeTime.Value.CompareTo(agrLink.EndWorkingWeek.ElementAt((int) Date.DayOfWeek).Value);
-                    //Сравниваем время ухода с расписанием
-                if (compareResult < 0) return true;
+                return true;
+            }
+            else
+            {
+                int compareResult =
+                    OutcomeTime.Value.CompareTo(agrLink.StartWorkingWeek.ElementAt((int)Date.DayOfWeek).Value);
+                return compareResult < 0;
             }
 
-            return true; //значит прошел без карточки и нужно его наказать
+
+            //if (IncomeTime != null)
+            //{
+            //    int compareResult =
+            //        IncomeTime.Value.CompareTo(agrLink.StartWorkingWeek.ElementAt((int) Date.DayOfWeek).Value);
+            //    //Сравниваем время прихода с расписанием
+            //    return compareResult > 0;
+            //}
+            //else
+            //{
+            //    //Если его не было и это был не выходной - наказать
+            //    if (agrLink.StartWorkingWeek.ElementAt((int) Date.DayOfWeek).Value.ToString() != "00:00:00")
+            //        return true;
+
+            //}
+
+            //if (OutcomeTime != null)
+            //{
+            //    int compareResult = OutcomeTime.Value.CompareTo(agrLink.EndWorkingWeek.ElementAt((int) Date.DayOfWeek).Value);
+            //        //Сравниваем время ухода с расписанием
+            //    return compareResult < 0;
+            //}
+            //else
+            //{
+            //    //Если его не было и это был не выходной - наказать
+            //    if (agrLink.StartWorkingWeek.ElementAt((int)Date.DayOfWeek).Value.ToString() != "00:00:00")
+            //        return true;
+            //}
+
+
+            //return true; //значит прошел без карточки и нужно его наказать
+            ////return false;
         }
     }
 }

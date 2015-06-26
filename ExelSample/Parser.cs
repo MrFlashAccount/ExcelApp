@@ -1,42 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
+using Excel;
 using Microsoft.Office.Interop.Excel;
+using Application = Microsoft.Office.Interop.Excel.Application;
 
 namespace ExelSample
 {
+    struct ExcelLine
+    {
+        public string[] Cell;
+    }
+
     public class Parser
     {
+        public delegate void ProgressBarInc(int max);
+
+        public event ProgressBarInc onParse;
+
         private string[,] _inOutReport;
         private string[,] _fullReport;
-        public void Read(string inOutReportPath, string fullReportPath)
+        private List<ExcelLine> _chiefEmaiList;
+        public bool Read(string inOutReportPath, string fullReportPath, string chiefEmailsPath)
         {
-            #region чтение в 2 потока
+            #region чтение в 2 потока (не используется)
 
-            Thread readInOutFileThread = new Thread(ReadInOutFile);
-            readInOutFileThread.Start(inOutReportPath);
+            //Thread readInOutFileThread = new Thread(ReadInOutFile);
+            //readInOutFileThread.Start(inOutReportPath);
 
-            Thread readFullReportFileThread = new Thread(ReadFullReport);
-            readFullReportFileThread.Start(fullReportPath);
+            //Thread readFullReportFileThread = new Thread(ReadFullReport);
+            //readFullReportFileThread.Start(fullReportPath);
 
-            readInOutFileThread.Join();
-            readFullReportFileThread.Join();
+            //readInOutFileThread.Join();
+            //readFullReportFileThread.Join();
 
-            #endregion
-
-            #region чтение в 1 поток(не используется)
-
-            //ReadInOutFile(inOutReportPath);
-            //ReadFullReport(fullReportPath);
+            //Marshal.CleanupUnusedObjectsInCurrentContext(); // выгрузить неуправляемые ресурсы
+            //GC.Collect();
 
             #endregion
 
-            Marshal.CleanupUnusedObjectsInCurrentContext(); // выгрузить неуправляемые ресурсы
-            GC.Collect();
+            #region чтение в 1 поток
+
+            int result = 0;
+            result += ReadInOutFileNoExcel(inOutReportPath);
+            result += ReadFullReportNoExcel(fullReportPath);
+            result += ReadCheifEmailFileNoExcel(chiefEmailsPath);
+            return result >= 3;
+            
+            #endregion
         }
+
+        #region Старый вариант чтения
 
         private void ReadInOutFile(object path)
         {
@@ -83,24 +103,204 @@ namespace ExelSample
             Marshal.CleanupUnusedObjectsInCurrentContext();
         }
 
+        #endregion
+
+        private int ReadInOutFileNoExcel(object path)
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = File.Open((string) path, FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Возникла ошибка. Закройте файл " + (string)path +" и повторите попытку.");
+                return 0;
+            }
+
+            string pattern = @"\w+\.xlsx";
+            Regex rg = new Regex(pattern);
+
+            IExcelDataReader excelReader;
+            if (rg.IsMatch((string)path))
+                excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream); 
+            else
+                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+
+            DataSet result = excelReader.AsDataSet();       
+            List<ExcelLine> inOutReportFile = new List<ExcelLine>();
+
+            for (int j = 0; j < 4; j++)
+            {
+                ExcelLine inOutReportLine = new ExcelLine();
+                inOutReportLine.Cell = new string[14];
+
+                for (int i = 0; i < 14; i++)
+                {
+                    inOutReportLine.Cell[i] = excelReader.GetString(i);
+                }
+
+                inOutReportFile.Add(inOutReportLine);
+                excelReader.Read();
+            }
+
+            while (excelReader.Read())
+            {
+                ExcelLine inOutReportLine = new ExcelLine();
+                inOutReportLine.Cell = new string[14];
+
+                for (int i = 0; i < 14; i++)
+                {
+                    inOutReportLine.Cell[i] = excelReader.GetString(i);
+                }
+
+                if (string.IsNullOrEmpty(inOutReportLine.Cell[3]))
+                if (string.IsNullOrEmpty(inOutReportLine.Cell[5])) break; //достигли конца списка
+
+                inOutReportFile.Add(inOutReportLine);
+            }
+            excelReader.Close();
+
+            _inOutReport = new string[14, inOutReportFile.Count];
+            for (int i = 0; i < 14; i++)
+            {
+                for (int j = 0; j < inOutReportFile.Count; j++)
+                {
+                    _inOutReport[i, j] = inOutReportFile.ElementAt(j).Cell[i] ?? "";
+                }
+            }
+            return 1;
+        }
+
+        private int ReadFullReportNoExcel(object path)
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = File.Open((string)path, FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Возникла ошибка. Закройте файл " + (string)path + " и повторите попытку.");
+                return 0;
+            }
+
+            string pattern = @"\w+\.xlsx";
+            Regex rg = new Regex(pattern);
+
+            IExcelDataReader excelReader;
+            if (rg.IsMatch((string)path))
+                excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+            else
+                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+
+            DataSet result = excelReader.AsDataSet();
+            List<ExcelLine> fullReportFile = new List<ExcelLine>();
+
+            while (excelReader.Read())
+            {
+                ExcelLine fullReportLine = new ExcelLine();
+                fullReportLine.Cell = new string[15];
+
+                for (int i = 0; i < 15; i++)
+                {
+                    fullReportLine.Cell[i] = excelReader.GetString(i);
+                }
+
+                if (string.IsNullOrEmpty(fullReportLine.Cell[0])) break; //достигли конца списка
+
+                fullReportFile.Add(fullReportLine);
+            }
+            excelReader.Close();
+
+            _fullReport = new string[15, fullReportFile.Count];
+            for (int i = 0; i < 15; i++)
+            {
+                for (int j = 0; j < fullReportFile.Count; j++)
+                {
+                    _fullReport[i, j] = fullReportFile.ElementAt(j).Cell[i] ?? "";
+                }
+            }
+            return 1;
+        }
+
+        private int ReadCheifEmailFileNoExcel(object path)
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = File.Open((string) path, FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Возникла ошибка. Закройте файл " + (string)path +" и повторите попытку.");
+                return 0;
+            }
+            string pattern = @"\w+\.xlsx";
+            Regex rg = new Regex(pattern);
+
+            IExcelDataReader excelReader;
+            if (rg.IsMatch((string)path))
+                excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+            else
+                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+
+            DataSet result = excelReader.AsDataSet();
+            _chiefEmaiList = new List<ExcelLine>();
+
+            while (excelReader.Read())
+            {
+                ExcelLine fullReportLine = new ExcelLine();
+                fullReportLine.Cell = new string[4];
+
+                for (int i = 0; i < 4; i++)
+                {
+                    fullReportLine.Cell[i] = excelReader.GetString(i);
+                }
+
+                if (string.IsNullOrEmpty(fullReportLine.Cell[0])) break; //достигли конца списка
+
+                _chiefEmaiList.Add(fullReportLine);
+            }
+            excelReader.Close();
+            return 1;
+        }
+
         public List<Employee> Parse(Agregator agrLink)
         {
             List<Employee> employees = new List<Employee>();
             int numEmployees = GetNumberOfEmployees();
-            int count = 0;
+            int count = 0; //для отладки.количество сотрудников с id.
+            agrLink.peroid = _inOutReport[0, 2];
 
             for (int i = 0; i < numEmployees; i++)
             {
+                onParse(numEmployees); //для progressbar
+
                 string[] fullName;
                 int position = i + 2; // индекс служащего в _fullReport
                 int id = Convert.ToInt32(_fullReport[5, position]); //получаем отдельно id.
                 string[] subdivision; // массив подразделений
                 string[] fullData = GetFullData(position, out subdivision); // полная инфрмация о сотруднике
                 InOutTime[] times = GetInOutTimeData(id, agrLink); // массив, содержащий информацию о времени прихода-ухода
+                string email;
 
+                try
+                {
+                    email = _chiefEmaiList.Last(s => s.Cell[1].Equals(id.ToString())).Cell[3];
+                }
+                catch (NullReferenceException)
+                {
+                    email = string.Empty;
+                }
+                catch (InvalidOperationException)
+                {
+                    email = string.Empty;
+                }
+                
                 if (fullData != null)
                 {
-                    employees.Add(new Employee(id, fullData[0], fullData[1], fullData[2], times, fullData[3], fullData[4], subdivision));
+                    employees.Add(new Employee(id, fullData[0], fullData[1], fullData[2], times, fullData[3], fullData[4], subdivision, email));
                     count++;
                 }
                 else
@@ -108,9 +308,6 @@ namespace ExelSample
                     fullName = ParseFullName(position);
                     employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2], times));
                 }
-                //id = 0;
-                //fullName = ParseFullName(position);
-                //employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2], times));
             }
             return employees;
         }
@@ -206,8 +403,18 @@ namespace ExelSample
                     j++;
                 }
                 data[i] = new InOutTime(_inOutReport[i + 5, 4], temp[0], temp[1], agrLink);
+
             }
             return data;
+        }
+
+        public bool CheckNoId()
+        {
+            for (int i = 3; i < _inOutReport.GetLength(0); i++)
+            {
+                if (_inOutReport[i, 2] == String.Empty) return true;
+            }
+            return false;
         }
     }
 }

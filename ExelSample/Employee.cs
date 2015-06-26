@@ -21,6 +21,7 @@ namespace ExelSample
         public string Email { get; private set; } // адрес электронной почты
         public Employee Chief { get; private set; } //ссылка на начальника.
         public bool IsLatest { get; private set; } // Клеймо опоздавшего
+        public bool NeedToSent { get; set; } //нужно ли отправлять
 
         #endregion
 
@@ -34,6 +35,7 @@ namespace ExelSample
             this.Category = Category;
             this.Subdivision = new string[6];
             this.Email = Email;
+            NeedToSent = false;
             if (Subdivision != null)
                 for (int i = 0; i < 6; i++)  this.Subdivision[i] = Subdivision[i];
             TimeList = new List<InOutTime>();
@@ -48,7 +50,11 @@ namespace ExelSample
 
         public void FindChief(List<Employee> chiefList)
         {
-            if (Category != "Руководитель" && Category != "Ведущий менеджер")
+            if ((Category == "Руководитель" || Category == "Ведущий менеджер") && Subdivision[3] == String.Empty)
+            {
+                Chief = chiefList.Last(s => s.Id == 14001333);
+            }
+            else
                 try
                 {
                     Chief = chiefList.Last(s => s.Subdivision[2].Equals(Subdivision[2]));
@@ -57,7 +63,6 @@ namespace ExelSample
                 {
                     Chief = chiefList.Last(s => s.Id == 14001333);
                 }
-            else Chief = chiefList.Last(s => s.Id == 14001333);
         }
     }
 }

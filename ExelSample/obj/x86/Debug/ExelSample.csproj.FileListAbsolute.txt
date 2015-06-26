@@ -9,3 +9,61 @@ d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\x86\Debug\
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\x86\Debug\ExelSample.csproj.GenerateResource.Cache
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\x86\Debug\ExelSample.exe
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\x86\Debug\ExelSample.pdb
+F:\ExcelSample\ExelSample\bin\x86\Debug\ExelSample.exe.config
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.csproj.ResolveComReference.cache
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.exe
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.pdb
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.Main.resources
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.Schedule.resources
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.Settings.resources
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.csproj.GenerateResource.Cache
+F:\ExcelSample\ExelSample\bin\x86\Debug\ExelSample.exe
+F:\ExcelSample\ExelSample\bin\x86\Debug\ExelSample.pdb
+F:\ExcelSample\ExelSample\bin\x86\Debug\Excel.dll
+F:\ExcelSample\ExelSample\bin\x86\Debug\ICSharpCode.SharpZipLib.dll
+F:\ExcelSample\ExelSample\bin\x86\Debug\Excel.pdb
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.csprojResolveAssemblyReference.cache
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.LatecomersTable.resources
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.EmployeesWithoutID.resources
+C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\ExelSample.exe.config
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.csproj.ResolveComReference.cache
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.exe
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.pdb
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.csprojResolveAssemblyReference.cache
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.EmployeesWithoutID.resources
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.LatecomersTable.resources
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.Main.resources
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.Schedule.resources
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.Settings.resources
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.csproj.GenerateResource.Cache
+C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\ExelSample.exe
+C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\ExelSample.pdb
+C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\Excel.dll
+C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\Excel.pdb
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\bin\x86\Debug\ExelSample.exe.config
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.csproj.ResolveComReference.cache
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.exe
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.pdb
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.csprojResolveAssemblyReference.cache
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.EmployeesWithoutID.resources
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.LatecomersTable.resources
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.Main.resources
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.Schedule.resources
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.Settings.resources
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.csproj.GenerateResource.Cache
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\bin\x86\Debug\ExelSample.exe
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\bin\x86\Debug\ExelSample.pdb
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\bin\x86\Debug\Excel.dll
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\bin\x86\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\bin\x86\Debug\Excel.pdb
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.ProgressBarForm.resources
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\bin\x86\Debug\ExelSample.exe.manifest
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\bin\x86\Debug\ExelSample.application
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.exe.manifest
+C:\Users\NOTEBOOK\Desktop\Новая папка\proga\ExelSample\obj\x86\Debug\ExelSample.application
+C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\ExelSample.exe.manifest
+C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\ExelSample.application
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.ProgressBarForm.resources
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.exe.manifest
+C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.application
