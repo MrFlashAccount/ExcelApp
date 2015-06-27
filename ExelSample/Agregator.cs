@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.Hosting;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ExelSample
 {
     public class Agregator
     {
+        // ReSharper disable InconsistentNaming
         public delegate void ProgressBarInc(int max);
         public event ProgressBarInc onSend;
 
@@ -47,7 +47,11 @@ namespace ExelSample
             parser.onParse += progressBarForm.ChangeProgress; //подписка
 
             bool result = parser.Read(inOutReportPath, fullReportPath, chiefEmailsPath);
-            if (!result) return false;
+            if (!result)
+            {
+                progressBarForm.Close();
+                return false;
+            }
             employees = parser.Parse(this);
             return true;
             //FindChiefForLatecomers();
@@ -62,10 +66,9 @@ namespace ExelSample
         public void FindChiefForLatecomers()
         {
             List<Employee> chiefs = GetChiefList();
-            foreach (var latecomer in employees)
+            foreach (var latecomer in employees.Where(latecomer => latecomer.IsLatest))
             {
-                if (latecomer.IsLatest)
-                    latecomer.FindChief(chiefs);
+                latecomer.FindChief(chiefs);
             }
         }
 
@@ -106,32 +109,22 @@ namespace ExelSample
         /// Возвращает список опздавших в течение недели.
         /// </summary>
         /// <returns>список опоздавших</returns>
-        private List<Employee> GetLatecomers()
+        public List<Employee> GetLatecomers()
         {
             return employees.Where(s => s.IsLatest && s.NeedToSent).ToList();
         }
 
-        public void SendMessages()
+        public bool SendMessages()
         {
             Properties.Settings.Default.Number++;
             List<Employee> chiefs = GetChiefList();
             List<Employee> latecomerList = GetLatecomers();
+            string path = wordTemplatePath.Substring(0, wordTemplatePath.IndexOf(".", StringComparison.Ordinal)) + "temp" + Properties.Settings.Default.Extention;
 
             foreach (var latecomer in latecomerList)
             {
                 latecomer.FindChief(chiefs);
             }
-
-            #region тестирование
-
-            //var smtp = new SmtpClient("smtp.gmail.com", 587)
-            //{
-            //    Credentials = new NetworkCredential("sergikgarin@gmail.com", "hs,fr007"),
-            //    EnableSsl = true
-            //};
-            //smpt.Send("sergikgarin@gmail.com", "sergikgarin@gmail.com", "test", "testbody");
-
-            #endregion
 
             SmtpClient smtp = new SmtpClient(Properties.Settings.Default.SMTP, int.Parse(Properties.Settings.Default.Port))
             {
@@ -145,45 +138,49 @@ namespace ExelSample
             {
                 try
                 {
-                    onSend(chiefs.Count);
+                    if (onSend != null) onSend(chiefs.Count);
 
                     latecomersOfchief = latecomerList.Where(s => s.Chief.Id == chief.Id).ToList();
                     if (latecomersOfchief.Count != 0)
                     {
-                        string path = wordTemplatePath.Substring(0, wordTemplatePath.IndexOf(".")) + "temp" +
-                                      Properties.Settings.Default.Extention;
                         WordDocument report = CreateReportFromTemplate(latecomersOfchief);
                         report.Save(path);
                         report.Close();
                         Marshal.CleanupUnusedObjectsInCurrentContext();
+
                         if (report.Closed)
                         {
-                            Attachment attachment = new Attachment(path);
-                            MailMessage message = new MailMessage
-                            {
-                                From = new MailAddress(Properties.Settings.Default.Email),
-                                Subject = "Опоздавшиe"
-                            };
-                            if (chief.Email != "")
-                            {
-                                message.To.Add(new MailAddress(chief.Email));
-                                message.Attachments.Add(attachment);
-                                smtp.Send(message);
-                            }
-                            attachment.Dispose();
-                            //attachment = null;
-                            GC.Collect();
+                            SendMessage(path, smtp, chief);
                         }
                     }
                 }
                 catch (Exception error)
                 {
-                    MessageBox.Show("Ошибка!! Подробности: " + error.Message);
-                    return;
+                    MessageBox.Show("Подробности:\n " + error.InnerException + "\n\n" + error.Message, "Ошибка!",MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
-
             }
             Properties.Settings.Default.Save();
+            return true;
+        }
+
+        private void SendMessage(string path,SmtpClient smtp,Employee chief)
+        {
+            Attachment attachment = new Attachment(path);
+            MailMessage message = new MailMessage
+            {
+                From = new MailAddress(Properties.Settings.Default.Email),
+                Subject = "Опоздавшиe"
+            };
+            if (chief.Email != "")
+            {
+                message.To.Add(new MailAddress(chief.Email));
+                message.Attachments.Add(attachment);
+                smtp.Send(message);
+            }
+            attachment.Dispose();
+            //attachment = null;
+            //GC.Collect();
         }
 
         private WordDocument CreateReportFromTemplate(List<Employee> latecomersOfchief)
@@ -272,7 +269,7 @@ namespace ExelSample
             wordDoc.Selection.Text = Properties.Settings.Default.Number.ToString(); //заполнение текущего номера отчета
 
             wordDoc.SetSelectionToBookmark("period"); //переход к закладке period
-            wordDoc.Selection.Text = peroid.Remove(0, peroid.IndexOf(" ") + 1);
+            wordDoc.Selection.Text = peroid.Remove(0, peroid.IndexOf(" ", StringComparison.Ordinal) + 1);
 
             wordDoc.SetSelectionToBookmark("name"); //переход к закладке name
             wordDoc.Selection.Aligment = TextAligment.Center;
@@ -281,6 +278,11 @@ namespace ExelSample
             #endregion
 
             return wordDoc;
+        }
+
+        private void Send(object count)
+        {
+            
         }
     }
 }

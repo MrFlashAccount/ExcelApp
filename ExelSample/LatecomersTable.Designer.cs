@@ -31,6 +31,7 @@
             this.LatecomersDataGridView = new System.Windows.Forms.DataGridView();
             this.ConfirmButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.LatecomersDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,11 +48,11 @@
             // 
             // ConfirmButton
             // 
-            this.ConfirmButton.Location = new System.Drawing.Point(514, 435);
+            this.ConfirmButton.Location = new System.Drawing.Point(542, 435);
             this.ConfirmButton.Name = "ConfirmButton";
             this.ConfirmButton.Size = new System.Drawing.Size(136, 23);
             this.ConfirmButton.TabIndex = 1;
-            this.ConfirmButton.Text = "ОК";
+            this.ConfirmButton.Text = "Начать отправку";
             this.ConfirmButton.UseVisualStyleBackColor = true;
             this.ConfirmButton.Click += new System.EventHandler(this.ConfirmButton_Click);
             // 
@@ -65,18 +66,29 @@
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 435);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(140, 23);
+            this.button1.TabIndex = 3;
+            this.button1.Text = "Выгрузить в Excel";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // LatecomersTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(832, 470);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.ConfirmButton);
             this.Controls.Add(this.LatecomersDataGridView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "LatecomersTable";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "EmployesTable";
+            this.Text = "Список опоздавших";
             ((System.ComponentModel.ISupportInitialize)(this.LatecomersDataGridView)).EndInit();
             this.ResumeLayout(false);
 
@@ -87,5 +99,6 @@
         private System.Windows.Forms.DataGridView LatecomersDataGridView;
         private System.Windows.Forms.Button ConfirmButton;
         private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button button1;
     }
 }

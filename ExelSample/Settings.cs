@@ -35,8 +35,10 @@ namespace ExelSample
 
         private void LoadTemplateButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog chooseFile = new OpenFileDialog();
-            chooseFile.Filter = "Word files (*rtf)|*.rtf|Word files(*.doc*)|*.doc*";
+            OpenFileDialog chooseFile = new OpenFileDialog
+            {
+                Filter = "Word files (*rtf)|*.rtf|Word files(*.doc*)|*.doc*"
+            };
 
             if (chooseFile.ShowDialog() == DialogResult.OK)
             {

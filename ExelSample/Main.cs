@@ -11,8 +11,7 @@ namespace ExelSample
         {
             InitializeComponent();
             Properties.Settings.Default.Path = Path.GetDirectoryName(Application.ExecutablePath) + @"\\data\\template" +
-                                   ".rtf";
-            //Properties.Settings.Default.Extention;
+                                   Properties.Settings.Default.Extention;
             Properties.Settings.Default.Save();
             agregator = new Agregator();
             ProgressBarForm progressBarForm = new ProgressBarForm();
@@ -38,7 +37,7 @@ namespace ExelSample
         {
             OpenFileDialog chooseFile = new OpenFileDialog
             {
-                Filter = "Excel files|*.xls*"
+                Filter = "Excel files|*.xls"
             };
 
             if (chooseFile.ShowDialog() == DialogResult.OK)
@@ -51,20 +50,19 @@ namespace ExelSample
 
         private void FireButton_Click(object sender, EventArgs e)
         {
-            if (InOutReportPathTextBox.Text != String.Empty && FullReportPathTextBox.Text != string.Empty)
+            if (InOutReportPathTextBox.Text != string.Empty && FullReportPathTextBox.Text != string.Empty && ChooseChiefEmailCheckTextbox.Text !=string.Empty)
             {
                 //Thread thread = new Thread(RunThread);
                 //thread.Start();
 
-                bool result = agregator.ReadAndParse(); //производится чтение из файлов и парсится в список agregator.employees
-                if (result)
+                if (agregator.ReadAndParse())
                 {
                     agregator.FindChiefForLatecomers();  //для опоздавших находятся начальники
                     //thread.Join();
                     //выводим список для проверки информации
                     if (agregator.CheckNoID())
                     {
-                        MessageBox.Show("Внимание!Обнаружены сотрудники без табельного номера!");
+                        MessageBox.Show("Внимание! Обнаружены сотрудники без табельного номера!");
                         EmployeesWithoutID employeesWithoutId = new EmployeesWithoutID(agregator);
                         employeesWithoutId.ShowDialog(this);
                     }
@@ -77,15 +75,13 @@ namespace ExelSample
                         if (MessageBox.Show("Вы действительно хотите осуществить рассылку?", "Подтверждение",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            agregator.SendMessages();
-                            MessageBox.Show("Отправка завершена");
+                            if(agregator.SendMessages())
+                                MessageBox.Show("Отправка завершена");
                         }
                     }
-
-
                 }
             }
-            else MessageBox.Show("Чего то не хватает","Ошибка!");
+            else MessageBox.Show("Данных не хватает. Проверьте, что вы выбрали необходимые файлы","Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void CheckSchedule_Click(object sender, EventArgs e)
@@ -106,10 +102,12 @@ namespace ExelSample
             latecomersTable.ShowDialog(this);
         }
 
-      private void ChooseChiefEmailButton_Click(object sender, EventArgs e)
+        private void ChooseChiefEmailButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog chooseFile = new OpenFileDialog();
-            chooseFile.Filter = "Excel files|*.xls*";
+            OpenFileDialog chooseFile = new OpenFileDialog
+            {
+                Filter = "Excel files|*.xls"
+            };
 
             if (chooseFile.ShowDialog() == DialogResult.OK)
             {
@@ -118,14 +116,6 @@ namespace ExelSample
                 agregator.chiefEmailsPath = chooseFile.FileName;
             }
         }
-
-        private void Main_Load(object sender, EventArgs e)
-        {
-            
-        }
-
-       
-
         //private void RunThread()
         //{
         //    agregator.ReadAndParse();

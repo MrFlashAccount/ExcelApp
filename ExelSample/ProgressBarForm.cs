@@ -22,5 +22,10 @@ namespace ExelSample
         {
 
         }
+
+        private void ProgressBarForm_Load(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }

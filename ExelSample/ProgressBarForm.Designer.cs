@@ -45,11 +45,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(299, 57);
             this.Controls.Add(this.progressBar1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.Name = "ProgressBarForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Обработка";
+            this.Load += new System.EventHandler(this.ProgressBarForm_Load);
             this.ResumeLayout(false);
 
         }

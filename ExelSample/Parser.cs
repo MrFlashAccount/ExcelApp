@@ -270,7 +270,6 @@ namespace ExelSample
         {
             List<Employee> employees = new List<Employee>();
             int numEmployees = GetNumberOfEmployees();
-            int count = 0; //для отладки.количество сотрудников с id.
             agrLink.peroid = _inOutReport[0, 2];
 
             for (int i = 0; i < numEmployees; i++)
@@ -289,26 +288,20 @@ namespace ExelSample
                 {
                     email = _chiefEmaiList.Last(s => s.Cell[1].Equals(id.ToString())).Cell[3];
                 }
-                catch (NullReferenceException)
+                catch
                 {
                     email = string.Empty;
                 }
-                catch (InvalidOperationException)
-                {
-                    email = string.Empty;
-                }
-                
                 if (fullData != null)
-                {
-                    employees.Add(new Employee(id, fullData[0], fullData[1], fullData[2], times, fullData[3], fullData[4], subdivision, email));
-                    count++;
-                }
+                    employees.Add(new Employee(id, fullData[0], fullData[1], fullData[2], times, fullData[3],
+                        fullData[4], subdivision, email));
                 else
                 {
                     fullName = ParseFullName(position);
                     employees.Add(new Employee(id, fullName[0], fullName[1], fullName[2], times));
                 }
             }
+            //MessageBox.Show(employees.Count.ToString());
             return employees;
         }
 
