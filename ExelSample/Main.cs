@@ -15,7 +15,8 @@ namespace ExelSample
             Properties.Settings.Default.Save();
             agregator = new Agregator();
             ProgressBarForm progressBarForm = new ProgressBarForm();
-            agregator.onSend += progressBarForm.ChangeProgress; //подписка
+            agregator.onSend += progressBarForm.ChangeProgress;
+            agregator.onError += progressBarForm.CloseProgress; 
         }
 
         private void OpenFullReportButton_Click(object sender, EventArgs e)
@@ -74,7 +75,6 @@ namespace ExelSample
 
                     latecomersTable.ShowDialog(this);
                 }
-                else MessageBox.Show("При чтении и парсинге что-то пошло не так.");
             }
             else MessageBox.Show("Данных не хватает. Проверьте, что вы выбрали необходимые файлы","Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

@@ -10,6 +10,11 @@ namespace ExelSample
             progressBar1.Value = 0;
         }
 
+        public void CloseProgress()
+        {
+            Hide();
+        }
+
         public void ChangeProgress(int max)
         {
             if (progressBar1.Value == 1) Show();

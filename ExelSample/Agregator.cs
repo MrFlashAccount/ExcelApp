@@ -16,10 +16,17 @@ namespace ExelSample
     {
         // ReSharper disable InconsistentNaming
         public delegate void ProgressBarInc(int max);
+        public delegate void ProgressBarClose();
+
         /// <summary>
         /// событие отправки сообщений, для progress bar
         /// </summary>
         public event ProgressBarInc onSend;
+
+        /// <summary>
+        /// событие происходящее при ошибке, по нему должен закрываться progressbar
+        /// </summary>
+        public event ProgressBarClose onError;
 
         /// <summary>
         /// время начала р.д. по умолчанию
@@ -203,6 +210,7 @@ namespace ExelSample
                         }
                         catch (Exception error)
                         {
+                            if (onError != null) onError();
                             MessageBox.Show("Подробности:\n " + error.InnerException + "\n\n" + error.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
@@ -265,6 +273,7 @@ namespace ExelSample
                 }
                 catch (Exception error)
                 {
+                    if (onError != null) onError();
                     MessageBox.Show("Подробности:\n " + error.InnerException + "\n\n" + error.Message, "Ошибка!",MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
