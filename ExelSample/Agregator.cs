@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Threading;
+using Microsoft.Office.Interop.Word;
+using MailMessage = System.Net.Mail.MailMessage;
 
 namespace ExelSample
 {
@@ -13,19 +16,57 @@ namespace ExelSample
     {
         // ReSharper disable InconsistentNaming
         public delegate void ProgressBarInc(int max);
+        /// <summary>
+        /// событие отправки сообщений, для progress bar
+        /// </summary>
         public event ProgressBarInc onSend;
 
-        public TimeSpan StartWorkingTime = TimeSpan.Parse("8:00:00"); // время начала р.д. по умолчанию
-        public TimeSpan EndWorkingTime = TimeSpan.Parse("17:00:00"); // время окончания р.д. по умолчанию
+        /// <summary>
+        /// время начала р.д. по умолчанию
+        /// </summary>
+        public TimeSpan StartWorkingTime = TimeSpan.Parse("8:00:00");
 
-        public Dictionary<int, TimeSpan> StartWorkingWeek = new Dictionary<int, TimeSpan>(); //Расписание начала р.д.
-        public Dictionary<int, TimeSpan> EndWorkingWeek = new Dictionary<int, TimeSpan>(); // Расписание окончания р.д.
+        /// <summary>
+        /// время окончания р.д. по умолчанию
+        /// </summary>
+        public TimeSpan EndWorkingTime = TimeSpan.Parse("17:00:00");
 
-        public string inOutReportPath; // путь к файлу входа-выхода
-        public string fullReportPath; // путь к файлу полного отчета
-        public string chiefEmailsPath; // путь к файлу со списком e-mail начальников
-        public string wordTemplatePath; // путь к шаблону Word.
-        public List<Employee> employees; // список сотрудников
+        /// <summary>
+        /// Расписание начала р.д.
+        /// </summary>
+        public Dictionary<int, TimeSpan> StartWorkingWeek = new Dictionary<int, TimeSpan>();
+
+        /// <summary>
+        /// Расписание окончания р.д.
+        /// </summary>
+        public Dictionary<int, TimeSpan> EndWorkingWeek = new Dictionary<int, TimeSpan>();
+
+        /// <summary>
+        /// путь к файлу входа-выхода
+        /// </summary>
+        public string inOutReportPath;
+
+        /// <summary>
+        /// путь к файлу полного отчета
+        /// </summary>
+        public string fullReportPath;
+
+        /// <summary>
+        /// путь к файлу со списком e-mail начальников
+        /// </summary>
+        public string chiefEmailsPath;
+
+        /// <summary>
+        /// путь к шаблону Word
+        /// </summary>
+        public string wordTemplatePath;
+
+        /// <summary>
+        /// список сотрудников
+        /// </summary>
+        public List<Employee> employees;
+
+
         public List<Employee> latecomersOfchief;
         private Parser parser;
         public string peroid;
@@ -39,6 +80,11 @@ namespace ExelSample
             employees = new List<Employee>();
             FillDictionaries();
         }
+
+        /// <summary>
+        /// Чтение и разбор входных файлов
+        /// </summary>
+        /// <returns>true - успешно, false - нет</returns>
         public bool ReadAndParse()
         {
             parser = new Parser();
@@ -54,15 +100,17 @@ namespace ExelSample
             }
             employees = parser.Parse(this);
             return true;
-            //FindChiefForLatecomers();
-            //SendMessages();
         }
+
 
         public bool CheckNoID()
         {
             return parser.CheckNoId();
         }
 
+        /// <summary>
+        /// Поиск начальников для опоздавших
+        /// </summary>
         public void FindChiefForLatecomers()
         {
             List<Employee> chiefs = GetChiefList();
@@ -114,9 +162,68 @@ namespace ExelSample
             return employees.Where(s => s.IsLatest && s.NeedToSent).ToList();
         }
 
-        public bool SendMessages()
+        /// <summary>
+        /// сохранение писем локально в виде вордовских документов
+        /// </summary>
+        /// <returns></returns>
+        public void SendLocal()
         {
-            Properties.Settings.Default.Number++;
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    Properties.Settings.Default.Number = 1;
+                    int Number = 1;
+                    List<Employee> chiefs = GetChiefList();
+                    List<Employee> latecomerList = GetLatecomers();
+
+                    foreach (var latecomer in latecomerList)
+                        latecomer.FindChief(chiefs);
+
+                    foreach (Employee chief in chiefs)
+                    {
+                        try
+                        {
+                            if (onSend != null) onSend(chiefs.Count);
+
+                            latecomersOfchief = latecomerList.Where(s => s.Chief.Id == chief.Id).ToList();
+                            if (latecomersOfchief.Count != 0)
+                            {
+                                string path = dialog.SelectedPath + @"\\Сообщение о приходе-уходе " + (Number++) + ".rtf";
+                                WordDocument report = CreateReportFromTemplate(latecomersOfchief);
+                                report.Save(path);
+                                report.Close();
+                                Marshal.CleanupUnusedObjectsInCurrentContext();
+                                report = null;
+                                GC.Collect();
+                                Properties.Settings.Default.Number++;
+                            }
+                        }
+                        catch (Exception error)
+                        {
+                            MessageBox.Show("Подробности:\n " + error.InnerException + "\n\n" + error.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                    MessageBox.Show("Сообщения успешно сохранены");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка!" + ex.InnerException);
+                }
+
+            }
+            
+        }
+
+        /// <summary>
+        /// Отправка сообщений начальникам
+        /// </summary>
+        public void SendMessages()
+        {
+            Properties.Settings.Default.Number = 1;
             List<Employee> chiefs = GetChiefList();
             List<Employee> latecomerList = GetLatecomers();
             string path = wordTemplatePath.Substring(0, wordTemplatePath.IndexOf(".", StringComparison.Ordinal)) + "temp" + Properties.Settings.Default.Extention;
@@ -152,18 +259,26 @@ namespace ExelSample
                         {
                             SendMessage(path, smtp, chief);
                         }
+                        report = null;
+                        GC.Collect();
                     }
                 }
                 catch (Exception error)
                 {
                     MessageBox.Show("Подробности:\n " + error.InnerException + "\n\n" + error.Message, "Ошибка!",MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    return;
                 }
             }
             Properties.Settings.Default.Save();
-            return true;
+            MessageBox.Show("Отправка завершена");
         }
 
+        /// <summary>
+        /// Отправка одного сообщения
+        /// </summary>
+        /// <param name="path">Путь к вложению</param>
+        /// <param name="smtp">Smtp</param>
+        /// <param name="chief">Начальник которому отправляем</param>
         private void SendMessage(string path,SmtpClient smtp,Employee chief)
         {
             Attachment attachment = new Attachment(path);
@@ -183,6 +298,11 @@ namespace ExelSample
             //GC.Collect();
         }
 
+        /// <summary>
+        /// Создание вложения для письма на основе шаблона
+        /// </summary>
+        /// <param name="latecomersOfchief"></param>
+        /// <returns></returns>
         private WordDocument CreateReportFromTemplate(List<Employee> latecomersOfchief)
         {
             WordDocument wordDoc = null;
@@ -278,11 +398,6 @@ namespace ExelSample
             #endregion
 
             return wordDoc;
-        }
-
-        private void Send(object count)
-        {
-            
         }
     }
 }
