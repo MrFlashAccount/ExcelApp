@@ -27,6 +27,7 @@ namespace ExelSample
         private string[,] _inOutReport;
         private string[,] _fullReport;
         private List<ExcelLine> _chiefEmaiList;
+
         public bool Read(string inOutReportPath, string fullReportPath, string chiefEmailsPath)
         {
             #region чтение в 2 потока (не используется)
@@ -118,58 +119,68 @@ namespace ExelSample
                 return 0;
             }
 
-            string pattern = @"\w+\.xlsx";
-            Regex rg = new Regex(pattern);
-
-            IExcelDataReader excelReader;
-            if (rg.IsMatch((string)path))
-                excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream); 
-            else
-                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-
-            DataSet result = excelReader.AsDataSet();       
-            List<ExcelLine> inOutReportFile = new List<ExcelLine>();
-
-            for (int j = 0; j < 4; j++)
+            //чтобы не падало если выбран документ не того формата
+            try
             {
-                ExcelLine inOutReportLine = new ExcelLine();
-                inOutReportLine.Cell = new string[14];
+                string pattern = @"\w+\.xlsx";
+                Regex rg = new Regex(pattern);
 
+                IExcelDataReader excelReader;
+                if (rg.IsMatch((string)path))
+                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                else
+                    excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+
+                DataSet result = excelReader.AsDataSet();
+                List<ExcelLine> inOutReportFile = new List<ExcelLine>();
+
+                for (int j = 0; j < 4; j++)
+                {
+                    ExcelLine inOutReportLine = new ExcelLine();
+                    inOutReportLine.Cell = new string[14];
+
+                    for (int i = 0; i < 14; i++)
+                    {
+                        inOutReportLine.Cell[i] = excelReader.GetString(i);
+                    }
+
+                    inOutReportFile.Add(inOutReportLine);
+                    excelReader.Read();
+                }
+
+                while (excelReader.Read())
+                {
+                    ExcelLine inOutReportLine = new ExcelLine();
+                    inOutReportLine.Cell = new string[14];
+
+                    for (int i = 0; i < 14; i++)
+                    {
+                        inOutReportLine.Cell[i] = excelReader.GetString(i);
+                    }
+
+                    if (string.IsNullOrEmpty(inOutReportLine.Cell[3]))
+                        if (string.IsNullOrEmpty(inOutReportLine.Cell[5])) break; //достигли конца списка
+
+                    inOutReportFile.Add(inOutReportLine);
+                }
+                excelReader.Close();
+
+                _inOutReport = new string[14, inOutReportFile.Count];
                 for (int i = 0; i < 14; i++)
                 {
-                    inOutReportLine.Cell[i] = excelReader.GetString(i);
+                    for (int j = 0; j < inOutReportFile.Count; j++)
+                    {
+                        _inOutReport[i, j] = inOutReportFile.ElementAt(j).Cell[i] ?? "";
+                    }
                 }
-
-                inOutReportFile.Add(inOutReportLine);
-                excelReader.Read();
+                return 1;
             }
-
-            while (excelReader.Read())
+            catch (Exception ex)
             {
-                ExcelLine inOutReportLine = new ExcelLine();
-                inOutReportLine.Cell = new string[14];
-
-                for (int i = 0; i < 14; i++)
-                {
-                    inOutReportLine.Cell[i] = excelReader.GetString(i);
-                }
-
-                if (string.IsNullOrEmpty(inOutReportLine.Cell[3]))
-                if (string.IsNullOrEmpty(inOutReportLine.Cell[5])) break; //достигли конца списка
-
-                inOutReportFile.Add(inOutReportLine);
+                MessageBox.Show("Ошибка!" + ex.InnerException + "\nВозможно структура файла " + path + " отличается от ожидаемой.");
+                return 0;
             }
-            excelReader.Close();
-
-            _inOutReport = new string[14, inOutReportFile.Count];
-            for (int i = 0; i < 14; i++)
-            {
-                for (int j = 0; j < inOutReportFile.Count; j++)
-                {
-                    _inOutReport[i, j] = inOutReportFile.ElementAt(j).Cell[i] ?? "";
-                }
-            }
-            return 1;
+            
         }
 
         private int ReadFullReportNoExcel(object path)
@@ -185,43 +196,51 @@ namespace ExelSample
                 return 0;
             }
 
-            string pattern = @"\w+\.xlsx";
-            Regex rg = new Regex(pattern);
-
-            IExcelDataReader excelReader;
-            if (rg.IsMatch((string)path))
-                excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-            else
-                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-
-            DataSet result = excelReader.AsDataSet();
-            List<ExcelLine> fullReportFile = new List<ExcelLine>();
-
-            while (excelReader.Read())
+            try
             {
-                ExcelLine fullReportLine = new ExcelLine();
-                fullReportLine.Cell = new string[15];
+                string pattern = @"\w+\.xlsx";
+                Regex rg = new Regex(pattern);
 
+                IExcelDataReader excelReader;
+                if (rg.IsMatch((string)path))
+                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                else
+                    excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+
+                DataSet result = excelReader.AsDataSet();
+                List<ExcelLine> fullReportFile = new List<ExcelLine>();
+
+                while (excelReader.Read())
+                {
+                    ExcelLine fullReportLine = new ExcelLine();
+                    fullReportLine.Cell = new string[15];
+
+                    for (int i = 0; i < 15; i++)
+                    {
+                        fullReportLine.Cell[i] = excelReader.GetString(i);
+                    }
+
+                    if (string.IsNullOrEmpty(fullReportLine.Cell[0])) break; //достигли конца списка
+
+                    fullReportFile.Add(fullReportLine);
+                }
+                excelReader.Close();
+
+                _fullReport = new string[15, fullReportFile.Count];
                 for (int i = 0; i < 15; i++)
                 {
-                    fullReportLine.Cell[i] = excelReader.GetString(i);
+                    for (int j = 0; j < fullReportFile.Count; j++)
+                    {
+                        _fullReport[i, j] = fullReportFile.ElementAt(j).Cell[i] ?? "";
+                    }
                 }
-
-                if (string.IsNullOrEmpty(fullReportLine.Cell[0])) break; //достигли конца списка
-
-                fullReportFile.Add(fullReportLine);
+                return 1;
             }
-            excelReader.Close();
-
-            _fullReport = new string[15, fullReportFile.Count];
-            for (int i = 0; i < 15; i++)
+            catch (Exception ex)
             {
-                for (int j = 0; j < fullReportFile.Count; j++)
-                {
-                    _fullReport[i, j] = fullReportFile.ElementAt(j).Cell[i] ?? "";
-                }
+                MessageBox.Show("Ошибка!" + ex.InnerException + "\nВозможно структура файла " + path + " отличается от ожидаемой.");
+                return 0;
             }
-            return 1;
         }
 
         private int ReadCheifEmailFileNoExcel(object path)
@@ -236,34 +255,43 @@ namespace ExelSample
                 MessageBox.Show("Возникла ошибка. Закройте файл " + (string)path +" и повторите попытку.");
                 return 0;
             }
-            string pattern = @"\w+\.xlsx";
-            Regex rg = new Regex(pattern);
 
-            IExcelDataReader excelReader;
-            if (rg.IsMatch((string)path))
-                excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-            else
-                excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
-
-            DataSet result = excelReader.AsDataSet();
-            _chiefEmaiList = new List<ExcelLine>();
-
-            while (excelReader.Read())
+            try
             {
-                ExcelLine fullReportLine = new ExcelLine();
-                fullReportLine.Cell = new string[4];
+                string pattern = @"\w+\.xlsx";
+                Regex rg = new Regex(pattern);
 
-                for (int i = 0; i < 4; i++)
+                IExcelDataReader excelReader;
+                if (rg.IsMatch((string)path))
+                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                else
+                    excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+
+                DataSet result = excelReader.AsDataSet();
+                _chiefEmaiList = new List<ExcelLine>();
+
+                while (excelReader.Read())
                 {
-                    fullReportLine.Cell[i] = excelReader.GetString(i);
+                    ExcelLine fullReportLine = new ExcelLine();
+                    fullReportLine.Cell = new string[4];
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        fullReportLine.Cell[i] = excelReader.GetString(i);
+                    }
+
+                    if (string.IsNullOrEmpty(fullReportLine.Cell[0])) break; //достигли конца списка
+
+                    _chiefEmaiList.Add(fullReportLine);
                 }
-
-                if (string.IsNullOrEmpty(fullReportLine.Cell[0])) break; //достигли конца списка
-
-                _chiefEmaiList.Add(fullReportLine);
+                excelReader.Close();
+                return 1;
             }
-            excelReader.Close();
-            return 1;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка!" + ex.InnerException + "\nВозможно структура файла " + path + " отличается от ожидаемой.");
+                return 0;
+            }
         }
 
         public List<Employee> Parse(Agregator agrLink)

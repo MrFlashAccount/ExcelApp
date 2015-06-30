@@ -15,7 +15,11 @@ namespace ExelSample
             if (progressBar1.Value == 1) Show();
             progressBar1.Maximum = max;
             progressBar1.Increment(1);
-            if (progressBar1.Value >= max) Close();
+            if (progressBar1.Value >= max)
+            {
+                progressBar1.Value = 0;
+                Hide();
+            }
         }
 
         private void progressBar1_Click(object sender, System.EventArgs e)

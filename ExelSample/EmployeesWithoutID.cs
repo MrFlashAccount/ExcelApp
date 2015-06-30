@@ -99,7 +99,7 @@ namespace ExelSample
             Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ExportToExcel_Click(object sender, EventArgs e)
         {
             int i = 0;
             Microsoft.Office.Interop.Excel.Application ObjExcel = new Microsoft.Office.Interop.Excel.Application
@@ -144,8 +144,8 @@ namespace ExelSample
                         Type.Missing, XlSaveAsAccessMode.xlExclusive, Type.Missing,
                         Type.Missing, Type.Missing, Type.Missing);
                     ObjWorkBook.Close();
-                    button1.Text = "выгружено";
-                    button1.Enabled = false;
+                    ExportToExcel.Text = "выгружено";
+                    ExportToExcel.Enabled = false;
                 }
                 catch (Exception ex)
                 {
@@ -158,8 +158,8 @@ namespace ExelSample
                         {
                             ObjExcel.Visible = true;
                             ObjExcel.UserControl = true;
-                            button1.Text = "выгружено";
-                            button1.Enabled = false;
+                            ExportToExcel.Text = "выгружено";
+                            ExportToExcel.Enabled = false;
                         }
                         catch (Exception error)
                         {
@@ -182,8 +182,8 @@ namespace ExelSample
             {
                 ObjExcel.Visible = true;
                 ObjExcel.UserControl = true;
-                button1.Text = "выгружено";
-                button1.Enabled = false;
+                ExportToExcel.Text = "выгружено";
+                ExportToExcel.Enabled = false;
             }
             Marshal.CleanupUnusedObjectsInCurrentContext();
         }

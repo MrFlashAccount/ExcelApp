@@ -55,14 +55,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ExelSample.exe" size="218016">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ExelSample.exe" size="220160">
       <assemblyIdentity name="ExelSample" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>zxWgXQ8CQdW0nB026B//mQ38g0s=</dsig:DigestValue>
+        <dsig:DigestValue>yEeFsws0ucWTZR/pIAQKeEj7NlE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -87,13 +87,13 @@
       <dsig:DigestValue>4MXePRmWcsZGrltwpW+269QTkTM=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="ExelSample.exe.config" size="1638">
+  <file name="ExelSample.exe.config" size="1614">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>jvXGfbDF4DxePVWFIfPUEkwXGV8=</dsig:DigestValue>
+      <dsig:DigestValue>nis0MdEa7/lTIHB3GVZ8lTCwzc4=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

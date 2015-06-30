@@ -31,7 +31,8 @@
             this.LatecomersDataGridView = new System.Windows.Forms.DataGridView();
             this.ConfirmButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ExportToExcel = new System.Windows.Forms.Button();
+            this.SaveLocal = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.LatecomersDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -66,22 +67,33 @@
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // button1
+            // ExportToExcel
             // 
-            this.button1.Location = new System.Drawing.Point(12, 435);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(140, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Выгрузить в Excel";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.ExportToExcel.Location = new System.Drawing.Point(12, 435);
+            this.ExportToExcel.Name = "ExportToExcel";
+            this.ExportToExcel.Size = new System.Drawing.Size(140, 23);
+            this.ExportToExcel.TabIndex = 3;
+            this.ExportToExcel.Text = "Выгрузить в Excel";
+            this.ExportToExcel.UseVisualStyleBackColor = true;
+            this.ExportToExcel.Click += new System.EventHandler(this.ExportToExcel_Click);
+            // 
+            // SaveLocal
+            // 
+            this.SaveLocal.Location = new System.Drawing.Point(158, 435);
+            this.SaveLocal.Name = "SaveLocal";
+            this.SaveLocal.Size = new System.Drawing.Size(136, 23);
+            this.SaveLocal.TabIndex = 4;
+            this.SaveLocal.Text = "Сохранить сообщения";
+            this.SaveLocal.UseVisualStyleBackColor = true;
+            this.SaveLocal.Click += new System.EventHandler(this.SaveLocal_Click);
             // 
             // LatecomersTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(832, 470);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.SaveLocal);
+            this.Controls.Add(this.ExportToExcel);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.ConfirmButton);
             this.Controls.Add(this.LatecomersDataGridView);
@@ -99,6 +111,7 @@
         private System.Windows.Forms.DataGridView LatecomersDataGridView;
         private System.Windows.Forms.Button ConfirmButton;
         private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ExportToExcel;
+        private System.Windows.Forms.Button SaveLocal;
     }
 }

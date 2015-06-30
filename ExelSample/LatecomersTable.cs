@@ -13,6 +13,12 @@ namespace ExelSample
         private List<Employee> employeesList;
         public bool NeedSent = true;
 
+        public delegate void SaveMessagesLocal();
+        public event SaveMessagesLocal onSaveLocal;
+
+        public delegate void SendMessages();
+        public event SendMessages onSendMessages;
+
         public LatecomersTable(List<Employee> employees)
         {
             InitializeComponent();
@@ -98,6 +104,11 @@ namespace ExelSample
         private void ConfirmButton_Click(object sender, EventArgs e)
         {
             MarkSelected();
+            if (MessageBox.Show("Вы действительно хотите осуществить рассылку?", "Подтверждение",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                if (onSendMessages != null) onSendMessages();
+            }
             Close();
         }
 
@@ -107,7 +118,14 @@ namespace ExelSample
             Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void SaveLocal_Click(object sender, EventArgs e)
+        {
+            MarkSelected();
+            if (onSaveLocal != null)
+                onSaveLocal();
+        }
+
+        private void ExportToExcel_Click(object sender, EventArgs e)
         {
             int i = 1;
             Microsoft.Office.Interop.Excel.Application ObjExcel = new Microsoft.Office.Interop.Excel.Application();
@@ -116,7 +134,7 @@ namespace ExelSample
             //Книга.
             ObjWorkBook = ObjExcel.Workbooks.Add(System.Reflection.Missing.Value);
             //Таблица.
-            ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet) ObjWorkBook.Sheets[1];
+            ObjWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)ObjWorkBook.Sheets[1];
 
             ObjWorkSheet.Cells.ColumnWidth = 40;
             ObjWorkSheet.Cells[1, 1].ColumnWidth = 6;
@@ -150,7 +168,7 @@ namespace ExelSample
                         ObjWorkSheet.Cells[i, 4 + j] = worker.TimeList.ElementAt(j).IncomeTime + " - " + worker.TimeList.ElementAt(j).OutcomeTime;
                 }
                 ObjWorkSheet.Cells[i, 11] = worker.Chief.Id;
-                ObjWorkSheet.Cells[i, 12] =  worker.Chief.Surname + " " + worker.Chief.Name + " " + worker.Chief.Patronymic;
+                ObjWorkSheet.Cells[i, 12] = worker.Chief.Surname + " " + worker.Chief.Name + " " + worker.Chief.Patronymic;
             }
             SaveFileDialog dialog = new SaveFileDialog()
             {
@@ -169,8 +187,8 @@ namespace ExelSample
                         Type.Missing, XlSaveAsAccessMode.xlExclusive, Type.Missing,
                         Type.Missing, Type.Missing, Type.Missing);
                     ObjWorkBook.Close();
-                    button1.Text = "выгружено";
-                    button1.Enabled = false;
+                    ExportToExcel.Text = "выгружено";
+                    ExportToExcel.Enabled = false;
                 }
                 catch (Exception ex)
                 {
@@ -183,8 +201,8 @@ namespace ExelSample
                         {
                             ObjExcel.Visible = true;
                             ObjExcel.UserControl = true;
-                            button1.Text = "выгружено";
-                            button1.Enabled = false;
+                            ExportToExcel.Text = "выгружено";
+                            ExportToExcel.Enabled = false;
                         }
                         catch (Exception error)
                         {
@@ -207,8 +225,8 @@ namespace ExelSample
             {
                 ObjExcel.Visible = true;
                 ObjExcel.UserControl = true;
-                button1.Text = "выгружено";
-                button1.Enabled = false;
+                ExportToExcel.Text = "выгружено";
+                ExportToExcel.Enabled = false;
             }
             Marshal.CleanupUnusedObjectsInCurrentContext();
         }

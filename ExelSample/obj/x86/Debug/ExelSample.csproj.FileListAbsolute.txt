@@ -67,3 +67,8 @@ C:\Users\Сергей\Desktop\proga\ExelSample\bin\x86\Debug\ExelSample.applicat
 C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.ProgressBarForm.resources
 C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.exe.manifest
 C:\Users\Сергей\Desktop\proga\ExelSample\obj\x86\Debug\ExelSample.application
+F:\ExcelSample\ExelSample\bin\x86\Debug\ExelSample.exe.manifest
+F:\ExcelSample\ExelSample\bin\x86\Debug\ExelSample.application
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.ProgressBarForm.resources
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.exe.manifest
+F:\ExcelSample\ExelSample\obj\x86\Debug\ExelSample.application

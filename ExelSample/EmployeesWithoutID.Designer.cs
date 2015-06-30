@@ -30,7 +30,7 @@
         {
             this.EmployeesWithoutIdDataGridView = new System.Windows.Forms.DataGridView();
             this.ConfirmButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ExportToExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.EmployeesWithoutIdDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,22 +55,22 @@
             this.ConfirmButton.UseVisualStyleBackColor = true;
             this.ConfirmButton.Click += new System.EventHandler(this.ConfirmButton_Click);
             // 
-            // button1
+            // ExportToExcel
             // 
-            this.button1.Location = new System.Drawing.Point(8, 436);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(124, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Выгрузить в Excel";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.ExportToExcel.Location = new System.Drawing.Point(8, 436);
+            this.ExportToExcel.Name = "ExportToExcel";
+            this.ExportToExcel.Size = new System.Drawing.Size(124, 23);
+            this.ExportToExcel.TabIndex = 3;
+            this.ExportToExcel.Text = "Выгрузить в Excel";
+            this.ExportToExcel.UseVisualStyleBackColor = true;
+            this.ExportToExcel.Click += new System.EventHandler(this.ExportToExcel_Click);
             // 
             // EmployeesWithoutID
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(376, 471);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ExportToExcel);
             this.Controls.Add(this.ConfirmButton);
             this.Controls.Add(this.EmployeesWithoutIdDataGridView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -86,6 +86,6 @@
 
         private System.Windows.Forms.DataGridView EmployeesWithoutIdDataGridView;
         private System.Windows.Forms.Button ConfirmButton;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ExportToExcel;
     }
 }

@@ -52,13 +52,10 @@ namespace ExelSample
         {
             if (InOutReportPathTextBox.Text != string.Empty && FullReportPathTextBox.Text != string.Empty && ChooseChiefEmailCheckTextbox.Text !=string.Empty)
             {
-                //Thread thread = new Thread(RunThread);
-                //thread.Start();
-
                 if (agregator.ReadAndParse())
                 {
-                    agregator.FindChiefForLatecomers();  //для опоздавших находятся начальники
-                    //thread.Join();
+                    agregator.FindChiefForLatecomers(); //для опоздавших находятся начальники
+
                     //выводим список для проверки информации
                     if (agregator.CheckNoID())
                     {
@@ -66,20 +63,18 @@ namespace ExelSample
                         EmployeesWithoutID employeesWithoutId = new EmployeesWithoutID(agregator);
                         employeesWithoutId.ShowDialog(this);
                     }
-                    LatecomersTable latecomersTable = new LatecomersTable(agregator.employees);
-                    latecomersTable.ShowDialog(this);
 
-                    //и отправляем
-                    if (latecomersTable.NeedSent)
-                    {
-                        if (MessageBox.Show("Вы действительно хотите осуществить рассылку?", "Подтверждение",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-                            if(agregator.SendMessages())
-                                MessageBox.Show("Отправка завершена");
-                        }
-                    }
+                    LatecomersTable latecomersTable = new LatecomersTable(agregator.employees);
+
+                    //подписываем чтобы по нажатию кнопки сохранялось локально
+                    latecomersTable.onSaveLocal += agregator.SendLocal;
+
+                    //подписываем чтобы по нажатию кнопки рассылалось
+                    latecomersTable.onSendMessages += agregator.SendMessages;
+
+                    latecomersTable.ShowDialog(this);
                 }
+                else MessageBox.Show("При чтении и парсинге что-то пошло не так.");
             }
             else MessageBox.Show("Данных не хватает. Проверьте, что вы выбрали необходимые файлы","Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
