@@ -55,7 +55,8 @@ namespace ExelSample
             {
                 if (agregator.ReadAndParse())
                 {
-                    agregator.FindChiefForLatecomers(); //для опоздавших находятся начальники
+                    agregator.FindChiefForLatecomers();
+                    agregator.ReplaceFromSpecialList(); 
 
                     //выводим список для проверки информации
                     if (agregator.CheckNoID())
@@ -109,6 +110,21 @@ namespace ExelSample
                 ChooseChiefEmailCheckTextbox.Text = chooseFile.FileName;
                 label3.Text = chooseFile.SafeFileName;
                 agregator.chiefEmailsPath = chooseFile.FileName;
+            }
+        }
+
+        private void ChooseSpecialEmaiListButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog chooseFile = new OpenFileDialog
+            {
+                Filter = "Excel files|*.xls"
+            };
+
+            if (chooseFile.ShowDialog() == DialogResult.OK)
+            {
+                SpecialEmailListPathTextBox.Text = chooseFile.FileName;
+                label4.Text = chooseFile.SafeFileName;
+                agregator.specialEmailListPath = chooseFile.FileName;
             }
         }
         //private void RunThread()

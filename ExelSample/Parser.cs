@@ -13,7 +13,7 @@ using Application = Microsoft.Office.Interop.Excel.Application;
 
 namespace ExelSample
 {
-    struct ExcelLine
+    public struct ExcelLine
     {
         public string[] Cell;
     }
@@ -27,8 +27,9 @@ namespace ExelSample
         private string[,] _inOutReport;
         private string[,] _fullReport;
         private List<ExcelLine> _chiefEmaiList;
+        public List<ExcelLine> specialEmailList;
 
-        public bool Read(string inOutReportPath, string fullReportPath, string chiefEmailsPath)
+        public bool Read(string inOutReportPath, string fullReportPath, string chiefEmailsPath, string specialEmailListPath)
         {
             #region чтение в 2 потока (не используется)
 
@@ -52,7 +53,8 @@ namespace ExelSample
             result += ReadInOutFileNoExcel(inOutReportPath);
             result += ReadFullReportNoExcel(fullReportPath);
             result += ReadCheifEmailFileNoExcel(chiefEmailsPath);
-            return result >= 3;
+            result += ReadSpecialEmailFileNoExcel(specialEmailListPath);
+            return result >= 4;
             
             #endregion
         }
@@ -105,6 +107,59 @@ namespace ExelSample
         }
 
         #endregion
+
+
+        private int ReadSpecialEmailFileNoExcel(object path)
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = File.Open((string)path, FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException)
+            {
+                MessageBox.Show("Возникла ошибка. Закройте файл " + (string)path + " и повторите попытку.");
+                return 0;
+            }
+
+            try
+            {
+                string pattern = @"\w+\.xlsx";
+                Regex rg = new Regex(pattern);
+
+                IExcelDataReader excelReader;
+                if (rg.IsMatch((string)path))
+                    excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                else
+                    excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+
+                DataSet result = excelReader.AsDataSet();
+                specialEmailList = new List<ExcelLine>();
+
+                excelReader.Read(); //пропускаем первую строку
+                while (excelReader.Read())
+                {
+                    ExcelLine specialEmailLine = new ExcelLine();
+                    specialEmailLine.Cell = new string[4];
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        specialEmailLine.Cell[i] = excelReader.GetString(i);
+                    }
+
+                    if (string.IsNullOrEmpty(specialEmailLine.Cell[0])) break; //достигли конца списка
+
+                    specialEmailList.Add(specialEmailLine);
+                }
+                excelReader.Close();
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка!" + ex.InnerException + "\nВозможно структура файла " + path + " отличается от ожидаемой.");
+                return 0;
+            }  
+        }
 
         private int ReadInOutFileNoExcel(object path)
         {

@@ -20,6 +20,7 @@ namespace ExelSample
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Properties.Settings.Default.SSL = checkBox1.Checked;
             Properties.Settings.Default.Email = textBox1.Text;
             Properties.Settings.Default.Password = textBox2.Text;
             Properties.Settings.Default.Port = textBox3.Text;
@@ -55,6 +56,11 @@ namespace ExelSample
                     Properties.Settings.Default.Save();
                 }
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

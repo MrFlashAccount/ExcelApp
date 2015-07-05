@@ -11,15 +11,15 @@ namespace ExelSample
         #region Обявление параметров класса
 
         public int Id { get; private set; } //Идентификатор
-        public string Surname { get; private set; } //Фамилия
-        public string Name { get; private set; } //Имя
-        public string Patronymic { get; private set; } //Отчество
+        public string Surname { get; set; } //Фамилия
+        public string Name { get; set; } //Имя
+        public string Patronymic { get; set; } //Отчество
         public string Position { get; private set; } //Должность
         public string Category { get; private set; } //Категория
         public string[] Subdivision { get; private set; } //Массив подразделений
-        public List<InOutTime> TimeList { get; private set; } // Список данных о времени прихода-ухода.
-        public string Email { get; private set; } // адрес электронной почты
-        public Employee Chief { get; private set; } //ссылка на начальника.
+        public List<InOutTime> TimeList { get; private set; } // Список данных о времени прихода-ухода
+        public string Email { get; set; } // адрес электронной почты
+        public Employee Chief { get; set; } //ссылка на начальника.
         public bool IsLatest { get; private set; } // Клеймо опоздавшего
         public bool NeedToSent { get; set; } //нужно ли отправлять
 

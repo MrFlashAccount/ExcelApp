@@ -50,11 +50,16 @@ namespace ExelSample
             this.InOutReportPathTextBox = new System.Windows.Forms.TextBox();
             this.OpenInOutReportButton = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.SpecialEmailListPathTextBox = new System.Windows.Forms.TextBox();
+            this.ChooseSpecialEmaiListButton = new System.Windows.Forms.Button();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // FireButton
@@ -74,7 +79,7 @@ namespace ExelSample
             // 
             // SettingsButton
             // 
-            this.SettingsButton.Location = new System.Drawing.Point(416, 231);
+            this.SettingsButton.Location = new System.Drawing.Point(204, 282);
             this.SettingsButton.Name = "SettingsButton";
             this.SettingsButton.Size = new System.Drawing.Size(122, 23);
             this.SettingsButton.TabIndex = 5;
@@ -124,12 +129,12 @@ namespace ExelSample
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.CheckSchedule);
-            this.groupBox3.Location = new System.Drawing.Point(278, 114);
+            this.groupBox3.Location = new System.Drawing.Point(12, 212);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(260, 92);
+            this.groupBox3.Size = new System.Drawing.Size(260, 55);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Шаг 4";
+            this.groupBox3.Text = "Шаг 5";
             // 
             // CheckSchedule
             // 
@@ -172,9 +177,9 @@ namespace ExelSample
             // 
             // OpenFullReportButton
             // 
-            this.OpenFullReportButton.Location = new System.Drawing.Point(34, 19);
+            this.OpenFullReportButton.Location = new System.Drawing.Point(16, 19);
             this.OpenFullReportButton.Name = "OpenFullReportButton";
-            this.OpenFullReportButton.Size = new System.Drawing.Size(192, 23);
+            this.OpenFullReportButton.Size = new System.Drawing.Size(228, 23);
             this.OpenFullReportButton.TabIndex = 0;
             this.OpenFullReportButton.Text = "Выбрать файл полного отчета";
             this.OpenFullReportButton.UseVisualStyleBackColor = true;
@@ -222,18 +227,58 @@ namespace ExelSample
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.FireButton);
-            this.groupBox5.Location = new System.Drawing.Point(150, 212);
+            this.groupBox5.Location = new System.Drawing.Point(278, 212);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(245, 55);
+            this.groupBox5.Size = new System.Drawing.Size(260, 55);
             this.groupBox5.TabIndex = 12;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Шаг 5";
+            this.groupBox5.Text = "Шаг 6";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.label4);
+            this.groupBox6.Controls.Add(this.SpecialEmailListPathTextBox);
+            this.groupBox6.Controls.Add(this.ChooseSpecialEmaiListButton);
+            this.groupBox6.Location = new System.Drawing.Point(278, 114);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(260, 92);
+            this.groupBox6.TabIndex = 12;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Шаг 3";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 71);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(0, 13);
+            this.label4.TabIndex = 3;
+            // 
+            // SpecialEmailListPathTextBox
+            // 
+            this.SpecialEmailListPathTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SpecialEmailListPathTextBox.Location = new System.Drawing.Point(6, 48);
+            this.SpecialEmailListPathTextBox.Name = "SpecialEmailListPathTextBox";
+            this.SpecialEmailListPathTextBox.ReadOnly = true;
+            this.SpecialEmailListPathTextBox.Size = new System.Drawing.Size(248, 20);
+            this.SpecialEmailListPathTextBox.TabIndex = 1;
+            // 
+            // ChooseSpecialEmaiListButton
+            // 
+            this.ChooseSpecialEmaiListButton.Location = new System.Drawing.Point(16, 19);
+            this.ChooseSpecialEmaiListButton.Name = "ChooseSpecialEmaiListButton";
+            this.ChooseSpecialEmaiListButton.Size = new System.Drawing.Size(228, 23);
+            this.ChooseSpecialEmaiListButton.TabIndex = 0;
+            this.ChooseSpecialEmaiListButton.Text = "Выбрать особый список";
+            this.ChooseSpecialEmaiListButton.UseVisualStyleBackColor = true;
+            this.ChooseSpecialEmaiListButton.Click += new System.EventHandler(this.ChooseSpecialEmaiListButton_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 279);
+            this.ClientSize = new System.Drawing.Size(550, 315);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -253,6 +298,8 @@ namespace ExelSample
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox5.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -277,5 +324,9 @@ namespace ExelSample
         private TextBox InOutReportPathTextBox;
         private Button OpenInOutReportButton;
         private GroupBox groupBox5;
+        private GroupBox groupBox6;
+        private Label label4;
+        private TextBox SpecialEmailListPathTextBox;
+        private Button ChooseSpecialEmaiListButton;
     }
 }

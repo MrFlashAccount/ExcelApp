@@ -67,6 +67,11 @@ namespace ExelSample
         /// путь к шаблону Word
         /// </summary>
         public string wordTemplatePath;
+        
+        /// <summary>
+        /// путь к особому списку адресатов 
+        /// </summary>
+        public string specialEmailListPath;
 
         /// <summary>
         /// список сотрудников
@@ -99,7 +104,7 @@ namespace ExelSample
             progressBarForm.Show();
             parser.onParse += progressBarForm.ChangeProgress; //подписка
 
-            bool result = parser.Read(inOutReportPath, fullReportPath, chiefEmailsPath);
+            bool result = parser.Read(inOutReportPath, fullReportPath, chiefEmailsPath, specialEmailListPath);
             if (!result)
             {
                 progressBarForm.Close();
@@ -245,7 +250,7 @@ namespace ExelSample
             {
                 Credentials =
                     new NetworkCredential(Properties.Settings.Default.Email, Properties.Settings.Default.Password), // входим в учетные данные
-                EnableSsl = true,
+                EnableSsl = Properties.Settings.Default.SSL
                 //Timeout = 999999999
             };
 
@@ -407,6 +412,32 @@ namespace ExelSample
             #endregion
 
             return wordDoc;
+        }
+
+        /// <summary>
+        /// заменяем начальника если сотрудник в специальном списке
+        /// </summary>
+        public void ReplaceFromSpecialList()
+        {
+            try
+            {
+                foreach (var worker in employees)
+                {
+                    int index = parser.specialEmailList.FindIndex(p => p.Cell[0] == worker.Id.ToString());
+                    if (index > -1)
+                    {
+                        string[] split = parser.specialEmailList[index].Cell[2].Split(new Char[] { ' ' });
+
+                        worker.Chief = null;
+                        worker.Chief = new Employee(0,split[0],split[1],split[2]);
+                        worker.Email = parser.specialEmailList[index].Cell[3]; //заменяем адрес
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при применении особого списка. " + ex.InnerException);
+            }
         }
     }
 }
