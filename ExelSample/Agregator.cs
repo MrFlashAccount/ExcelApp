@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using System.Threading;
-using Microsoft.Office.Interop.Word;
 using MailMessage = System.Net.Mail.MailMessage;
 
 namespace ExelSample
@@ -186,7 +183,7 @@ namespace ExelSample
             {
                 try
                 {
-                    Properties.Settings.Default.Number = 1;
+                    Properties.Settings.Default.Number++;
                     int Number = 1;
                     List<Employee> chiefs = GetChiefList();
                     List<Employee> latecomerList = GetLatecomers();
@@ -208,9 +205,8 @@ namespace ExelSample
                                 report.Save(path);
                                 report.Close();
                                 Marshal.CleanupUnusedObjectsInCurrentContext();
-                                report = null;
                                 GC.Collect();
-                                Properties.Settings.Default.Number++;
+                                //Properties.Settings.Default.Number++;
                             }
                         }
                         catch (Exception error)
@@ -236,7 +232,7 @@ namespace ExelSample
         /// </summary>
         public void SendMessages()
         {
-            Properties.Settings.Default.Number = 1;
+            Properties.Settings.Default.Number ++;
             List<Employee> chiefs = GetChiefList();
             List<Employee> latecomerList = GetLatecomers();
             string path = wordTemplatePath.Substring(0, wordTemplatePath.IndexOf(".", StringComparison.Ordinal)) + "temp" + Properties.Settings.Default.Extention;
@@ -253,6 +249,12 @@ namespace ExelSample
                 EnableSsl = Properties.Settings.Default.SSL
                 //Timeout = 999999999
             };
+
+            //var test = new List<Employee>();
+            //foreach (var s in latecomerList)
+            //{
+            //    if (s.Position.Contains("Заместитель") && s.Subdivision[3] == "") test.Add(s);
+            //}
 
             foreach (Employee chief in chiefs)
             {
@@ -272,7 +274,6 @@ namespace ExelSample
                         {
                             SendMessage(path, smtp, chief);
                         }
-                        report = null;
                         GC.Collect();
                     }
                 }
@@ -308,8 +309,6 @@ namespace ExelSample
                 smtp.Send(message);
             }
             attachment.Dispose();
-            //attachment = null;
-            //GC.Collect();
         }
 
         /// <summary>
@@ -369,24 +368,23 @@ namespace ExelSample
                 wordDoc.Selection.Text = latecomersOfchief[i].Position;
 
                 wordDoc.SetSelectionToCell(position, 4);
-                //wordDoc.Selection.Text = "";
                 foreach (var s in latecomersOfchief[i].TimeList.Where(s => s.IsLatest))
                 {
                     if (s.IncomeTime != null)
                         if (s.OutcomeTime != null)
-                            wordDoc.Selection.Text += s.Date.ToString("dd-MM-yyyy") + ":\n" +
+                            wordDoc.Selection.Text += s.Date.ToString("dd.MM.yyyy") + ":\n" +
                                                      "пришел: " + s.IncomeTime.Value + "\n" +
                                                      "ушел: " + s.OutcomeTime.Value + "\n";
                         else
-                            wordDoc.Selection.Text += s.Date.ToString("dd-MM-yyyy") + ":\n" +
+                            wordDoc.Selection.Text += s.Date.ToString("dd.MM.yyyy") + ":\n" +
                                                      "пришел: " + s.IncomeTime.Value + "\n" +
                                                      "ушел: " + "нет данных\n";
                     else if (s.OutcomeTime != null)
-                        wordDoc.Selection.Text += s.Date.ToString("dd-MM-yyyy") + ":\n" +
+                        wordDoc.Selection.Text += s.Date.ToString("dd.MM.yyyy") + ":\n" +
                                                  "пришел: " + "нет данных" + "\n" + "ушел: " +
                                                  s.OutcomeTime.Value + "\n";
                     else
-                        wordDoc.Selection.Text += s.Date.ToString("dd-MM-yyyy") + ":\n" + "пришел: " + "нет данных" + "\n" + "ушел: " +
+                        wordDoc.Selection.Text += s.Date.ToString("dd.MM.yyyy") + ":\n" + "пришел: " + "нет данных" + "\n" + "ушел: " +
                                                  "нет данных\n";
                 }
             }
@@ -395,19 +393,45 @@ namespace ExelSample
 
             #region заполнение оставшихся полей
 
-            wordDoc.SetSelectionToBookmark("date"); //переход к закладке date
-            wordDoc.Selection.Aligment = TextAligment.Center;
-            wordDoc.Selection.Text = DateTime.Today.Day + "." + DateTime.Today.Month + "." + DateTime.Today.Year + "г.";  // заполнение текущей даты
-
-            wordDoc.SetSelectionToBookmark("num"); //переход к закладке num
-            wordDoc.Selection.Text = Properties.Settings.Default.Number.ToString(); //заполнение текущего номера отчета
-
-            wordDoc.SetSelectionToBookmark("period"); //переход к закладке period
-            wordDoc.Selection.Text = peroid.Remove(0, peroid.IndexOf(" ", StringComparison.Ordinal) + 1);
-
-            wordDoc.SetSelectionToBookmark("name"); //переход к закладке name
-            wordDoc.Selection.Aligment = TextAligment.Center;
-            wordDoc.Selection.Text = latecomersOfchief[0].Chief.Surname + " " + latecomersOfchief[0].Chief.Name + " " + latecomersOfchief[0].Chief.Patronymic;
+            try
+            {
+                wordDoc.SetSelectionToBookmark("date"); //переход к закладке date
+                wordDoc.Selection.Aligment = TextAligment.Center;
+                wordDoc.Selection.Text = DateTime.Today.Day.ToString("D2") + "." + DateTime.Today.Month.ToString("D2") + "." + DateTime.Today.Year + "г.";  // заполнение текущей даты
+            } 
+            catch 
+            {
+                //ignored
+            }
+            try
+            {
+                wordDoc.SetSelectionToBookmark("num"); //переход к закладке num
+                wordDoc.Selection.Text = Properties.Settings.Default.Number.ToString(); //заполнение текущего номера отчета
+            } 
+            catch
+            {
+                //ignored
+            }
+            try
+            {
+                wordDoc.SetSelectionToBookmark("period"); //переход к закладке period
+                wordDoc.Selection.Text = peroid.Remove(0, peroid.IndexOf(" ", StringComparison.Ordinal) + 1);
+            }
+            catch
+            {
+                //ignored
+            }
+            try
+            {
+                wordDoc.SetSelectionToBookmark("name"); //переход к закладке name
+                wordDoc.Selection.Aligment = TextAligment.Center;
+                wordDoc.Selection.Text = "(" + latecomersOfchief[0].Chief.Surname + " " +
+                                         latecomersOfchief[0].Chief.Name + " " + latecomersOfchief[0].Chief.Patronymic + ") ";
+            }
+            catch
+            {
+                //ignored
+            }
 
             #endregion
 
@@ -426,7 +450,7 @@ namespace ExelSample
                     int index = parser.specialEmailList.FindIndex(p => p.Cell[0] == worker.Id.ToString());
                     if (index > -1)
                     {
-                        string[] split = parser.specialEmailList[index].Cell[2].Split(new Char[] { ' ' });
+                        string[] split = parser.specialEmailList[index].Cell[2].Split(' ');
 
                         worker.Chief = null;
                         worker.Chief = new Employee(0,split[0],split[1],split[2]);

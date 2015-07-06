@@ -244,7 +244,7 @@ namespace ExelSample
             this.groupBox6.Size = new System.Drawing.Size(260, 92);
             this.groupBox6.TabIndex = 12;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Шаг 3";
+            this.groupBox6.Text = "Шаг 4";
             // 
             // label4
             // 

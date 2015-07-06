@@ -52,7 +52,17 @@ namespace ExelSample
         {
             if ((Category == "Руководитель" || Category == "Ведущий менеджер") && Subdivision[3] == String.Empty)
             {
-                Chief = chiefList.Last(s => s.Id == 14001333);
+                if (Position.Contains("аместитель"))
+                    try
+                    {
+                        Chief = chiefList.Last(s => s.Subdivision[2].Equals(Subdivision[2]) && !s.Position.Contains("аместитель"));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        Chief = chiefList.Last(s => s.Id == 14001333);
+                    }
+                else
+                    Chief = chiefList.Last(s => s.Id == 14001333);
             }
             else
                 try
@@ -63,6 +73,32 @@ namespace ExelSample
                 {
                     Chief = chiefList.Last(s => s.Id == 14001333);
                 }
+            //if ((Category == "Руководитель" || Category == "Ведущий менеджер") && Subdivision[3] == String.Empty &&
+            //    !Position.Contains("Заместитель"))
+            //{
+            //    Chief = chiefList.Last(s => s.Id == 14001333);
+            //}
+            //else
+            //    try
+            //    {
+            //        Chief = chiefList.Last(s => s.Subdivision[2].Equals(Subdivision[2]));
+            //    }
+            //    catch (InvalidOperationException)
+            //    {
+            //        Chief = chiefList.Last(s => s.Id == 14001333);
+            //    }
+
+            //if ((Category == "Руководитель" || Category == "Ведущий менеджер") && Position.Contains("Заместитель"))
+            //{
+            //    try
+            //    {
+            //        Chief = chiefList.Last(s => s.Subdivision[2].Equals(Subdivision[2]));
+            //    }
+            //    catch (InvalidOperationException)
+            //    {
+            //        Chief = chiefList.Last(s => s.Id == 14001333);
+            //    }
+            //}
         }
     }
 }
