@@ -23,7 +23,7 @@ namespace ExelSample
         {
             OpenFileDialog chooseFile = new OpenFileDialog
             {
-                Filter = "Excel files|*.xls"
+                Filter = "Excel Files|*.xls;*.xlsx;*.xlsm"
             };
 
             if (chooseFile.ShowDialog() == DialogResult.OK)
@@ -38,7 +38,7 @@ namespace ExelSample
         {
             OpenFileDialog chooseFile = new OpenFileDialog
             {
-                Filter = "Excel files|*.xls"
+                Filter = "Excel Files|*.xls;*.xlsx;*.xlsm"
             };
 
             if (chooseFile.ShowDialog() == DialogResult.OK)
@@ -102,7 +102,7 @@ namespace ExelSample
         {
             OpenFileDialog chooseFile = new OpenFileDialog
             {
-                Filter = "Excel files|*.xls"
+                Filter = "Excel Files|*.xls;*.xlsx;*.xlsm"
             };
 
             if (chooseFile.ShowDialog() == DialogResult.OK)
@@ -117,7 +117,7 @@ namespace ExelSample
         {
             OpenFileDialog chooseFile = new OpenFileDialog
             {
-                Filter = "Excel files|*.xls"
+                Filter = "Excel Files|*.xls;*.xlsx;*.xlsm"
             };
 
             if (chooseFile.ShowDialog() == DialogResult.OK)

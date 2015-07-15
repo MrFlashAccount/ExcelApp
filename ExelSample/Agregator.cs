@@ -183,7 +183,7 @@ namespace ExelSample
             {
                 try
                 {
-                    Properties.Settings.Default.Number++;
+                    Properties.Settings.Default.Number=1;
                     int Number = 1;
                     List<Employee> chiefs = GetChiefList();
                     List<Employee> latecomerList = GetLatecomers();
@@ -206,7 +206,7 @@ namespace ExelSample
                                 report.Close();
                                 Marshal.CleanupUnusedObjectsInCurrentContext();
                                 GC.Collect();
-                                //Properties.Settings.Default.Number++;
+                                Properties.Settings.Default.Number++;
                             }
                         }
                         catch (Exception error)
@@ -232,7 +232,7 @@ namespace ExelSample
         /// </summary>
         public void SendMessages()
         {
-            Properties.Settings.Default.Number ++;
+            Properties.Settings.Default.Number = 1;
             List<Employee> chiefs = GetChiefList();
             List<Employee> latecomerList = GetLatecomers();
             string path = wordTemplatePath.Substring(0, wordTemplatePath.IndexOf(".", StringComparison.Ordinal)) + "temp" + Properties.Settings.Default.Extention;
@@ -275,6 +275,7 @@ namespace ExelSample
                             SendMessage(path, smtp, chief);
                         }
                         GC.Collect();
+                        Properties.Settings.Default.Number++;
                     }
                 }
                 catch (Exception error)

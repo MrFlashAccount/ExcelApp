@@ -36,5 +36,10 @@ namespace ExelSample
         {
 
         }
+
+        private void ProgressBarForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Hide();
+        }
     }
 }
