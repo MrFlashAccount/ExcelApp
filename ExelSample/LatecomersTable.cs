@@ -37,9 +37,9 @@ namespace ExelSample
 
             LatecomersDataGridView.Columns.Add(checkColumn);
 
-            LatecomersDataGridView.ColumnCount = 12;
+            LatecomersDataGridView.ColumnCount = 13;
             LatecomersDataGridView.Columns[2].Width = 200;
-            for (int i = 3; i < 10; i++)
+            for (int i = 3; i < 13; i++)
                 LatecomersDataGridView.Columns[i].Width = 120;
             LatecomersDataGridView.Columns[11].Width = 200;
 
@@ -55,6 +55,7 @@ namespace ExelSample
             LatecomersDataGridView.Columns[9].Name = "Воскресенье";
             LatecomersDataGridView.Columns[10].Name = "Т/н начальника";
             LatecomersDataGridView.Columns[11].Name = "Начальник";
+            LatecomersDataGridView.Columns[12].Name = "email начальника";
 
             //надо сделать выборку опоздавших
             employeesList = employeesList.Where(s => s.IsLatest).ToList();
@@ -83,6 +84,7 @@ namespace ExelSample
                 LatecomersDataGridView.Rows[rowNumber].Cells[10].Value = worker.Chief.Id;
                 LatecomersDataGridView.Rows[rowNumber].Cells[11].Value = worker.Chief.Surname + " " + worker.Chief.Name +
                                                                          " " + worker.Chief.Patronymic;
+                LatecomersDataGridView.Rows[rowNumber].Cells[12].Value = worker.Chief.Email;
                 rowNumber++;
             }
             LatecomersDataGridView.AllowUserToAddRows = false;

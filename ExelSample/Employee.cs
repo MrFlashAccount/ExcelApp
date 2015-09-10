@@ -10,7 +10,7 @@ namespace ExelSample
     {
         #region Обявление параметров класса
 
-        public int Id { get; private set; } //Идентификатор
+        public int Id { get; set; } //Идентификатор
         public string Surname { get; set; } //Фамилия
         public string Name { get; set; } //Имя
         public string Patronymic { get; set; } //Отчество
@@ -67,7 +67,7 @@ namespace ExelSample
             else
                 try
                 {
-                    Chief = chiefList.Last(s => s.Subdivision[2].Equals(Subdivision[2]));
+                    Chief = chiefList.Last(s => s.Subdivision[2].Equals(Subdivision[2]) && !s.Position.Contains("аместитель"));
                 }
                 catch (InvalidOperationException)
                 {

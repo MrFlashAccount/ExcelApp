@@ -9,3 +9,24 @@ d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\Exel
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.Schedule.resources
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.csprojResolveAssemblyReference.cache
 d:\my documents\visual studio 2013\Projects\ExelSample\ExelSample\obj\Debug\ExelSample.Settings.resources
+F:\ExcelSample\ExelSample\bin\Debug\ExelSample.exe.config
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.csproj.ResolveComReference.cache
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.exe
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.pdb
+F:\ExcelSample\ExelSample\bin\Debug\ExelSample.exe.manifest
+F:\ExcelSample\ExelSample\bin\Debug\ExelSample.application
+F:\ExcelSample\ExelSample\bin\Debug\ExelSample.exe
+F:\ExcelSample\ExelSample\bin\Debug\ExelSample.pdb
+F:\ExcelSample\ExelSample\bin\Debug\Excel.dll
+F:\ExcelSample\ExelSample\bin\Debug\ICSharpCode.SharpZipLib.dll
+F:\ExcelSample\ExelSample\bin\Debug\Excel.pdb
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.csprojResolveAssemblyReference.cache
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.EmployeesWithoutID.resources
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.LatecomersTable.resources
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.Main.resources
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.ProgressBarForm.resources
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.Schedule.resources
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.Settings.resources
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.csproj.GenerateResource.Cache
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.exe.manifest
+F:\ExcelSample\ExelSample\obj\Debug\ExelSample.application

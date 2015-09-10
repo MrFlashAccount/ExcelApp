@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Excel;
 using MailMessage = System.Net.Mail.MailMessage;
 
 namespace ExelSample
@@ -241,6 +242,8 @@ namespace ExelSample
             {
                 latecomer.FindChief(chiefs);
             }
+            ReplaceFromSpecialList(latecomerList);
+
 
             SmtpClient smtp = new SmtpClient(Properties.Settings.Default.SMTP, int.Parse(Properties.Settings.Default.Port))
             {
@@ -256,10 +259,26 @@ namespace ExelSample
             //    if (s.Position.Contains("Заместитель") && s.Subdivision[3] == "") test.Add(s);
             //}
 
+            int messageNumber = 0;
             foreach (Employee chief in chiefs)
             {
                 try
                 {
+                    if (messageNumber >= 9)
+                    {
+                        messageNumber = 0;
+                        smtp.Dispose();
+                        smtp = null;
+                        GC.Collect();
+
+                        smtp = new SmtpClient(Properties.Settings.Default.SMTP, int.Parse(Properties.Settings.Default.Port))    //новый сеанс чтобы не сработала блокировка спама
+                        {
+                            Credentials =
+                                new NetworkCredential(Properties.Settings.Default.Email, Properties.Settings.Default.Password),
+                            EnableSsl = Properties.Settings.Default.SSL
+                        };
+                    }
+
                     if (onSend != null) onSend(chiefs.Count);
 
                     latecomersOfchief = latecomerList.Where(s => s.Chief.Id == chief.Id).ToList();
@@ -273,10 +292,11 @@ namespace ExelSample
                         if (report.Closed)
                         {
                             SendMessage(path, smtp, chief);
+                            messageNumber++;
                         }
                         GC.Collect();
                         Properties.Settings.Default.Number++;
-                    }
+                    }  
                 }
                 catch (Exception error)
                 {
@@ -449,13 +469,49 @@ namespace ExelSample
                 foreach (var worker in employees)
                 {
                     int index = parser.specialEmailList.FindIndex(p => p.Cell[0] == worker.Id.ToString());
+
                     if (index > -1)
                     {
-                        string[] split = parser.specialEmailList[index].Cell[2].Split(' ');
+                        if (GetChiefList()
+                                .FindIndex(s => s.Id == Convert.ToInt32(parser.specialEmailList[index].Cell[3])) > -1)
+                        {
+                            worker.Chief = null;
+                            worker.Chief =
+                                GetChiefList()
+                                    .FirstOrDefault(s => s.Id == Convert.ToInt32(parser.specialEmailList[index].Cell[3]));
+                        }
+                        else
+                        {
+                            MessageBox.Show("Ошибка особого списка: не найден руководитель с табельным номером " +
+                                            Convert.ToInt32(parser.specialEmailList[index].Cell[3]));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при применении особого списка. " + ex.InnerException);
+            }
+        }
 
-                        worker.Chief = null;
-                        worker.Chief = new Employee(0,split[0],split[1],split[2]);
-                        worker.Email = parser.specialEmailList[index].Cell[3]; //заменяем адрес
+        public void ReplaceFromSpecialList(List<Employee> employees2)
+        {
+            try
+            {
+                foreach (var worker in employees2)
+                {
+                    int index = parser.specialEmailList.FindIndex(p => p.Cell[0] == worker.Id.ToString());
+
+                    if (index > -1)
+                    {
+                        if (GetChiefList()
+                                .FindIndex(s => s.Id == Convert.ToInt32(parser.specialEmailList[index].Cell[3])) > -1)
+                        {
+                            worker.Chief = null;
+                            worker.Chief =
+                                GetChiefList()
+                                    .FirstOrDefault(s => s.Id == Convert.ToInt32(parser.specialEmailList[index].Cell[3]));
+                        }
                     }
                 }
             }

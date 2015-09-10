@@ -3,16 +3,16 @@
   <Profiles />
   <Settings>
     <Setting Name="Email" Type="System.String" Scope="User">
-      <Value Profile="(Default)">m1026m@yandex.ru</Value>
+      <Value Profile="(Default)">temp@ivenergo.ru</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
-      <Value Profile="(Default)">password1025</Value>
+      <Value Profile="(Default)">temp123</Value>
     </Setting>
     <Setting Name="Port" Type="System.String" Scope="User">
       <Value Profile="(Default)">25</Value>
     </Setting>
     <Setting Name="SMTP" Type="System.String" Scope="User">
-      <Value Profile="(Default)">smtp.yandex.ru</Value>
+      <Value Profile="(Default)">mx-krut.iv.mrsk-cp.net</Value>
     </Setting>
     <Setting Name="Number" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

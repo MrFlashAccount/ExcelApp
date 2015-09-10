@@ -25,7 +25,7 @@ namespace ExelSample.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("m1026m@yandex.ru")]
+        [global::System.Configuration.DefaultSettingValueAttribute("temp@ivenergo.ru")]
         public string Email {
             get {
                 return ((string)(this["Email"]));
@@ -37,7 +37,7 @@ namespace ExelSample.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("password1025")]
+        [global::System.Configuration.DefaultSettingValueAttribute("temp123")]
         public string Password {
             get {
                 return ((string)(this["Password"]));
@@ -61,7 +61,7 @@ namespace ExelSample.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("smtp.yandex.ru")]
+        [global::System.Configuration.DefaultSettingValueAttribute("mx-krut.iv.mrsk-cp.net")]
         public string SMTP {
             get {
                 return ((string)(this["SMTP"]));
